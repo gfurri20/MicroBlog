@@ -20,10 +20,9 @@ public interface IBlogUserService
     /**
      * Update a specific <code>BlogUser</code>
      * 
-     * @param id of the user to be update
      * @param user updated
      */
-    public void updateUser(Long id, BlogUser user);
+    public void updateUser(BlogUser user);
     /**
      * Delete a specific <code>BlogUser</code>
      * 

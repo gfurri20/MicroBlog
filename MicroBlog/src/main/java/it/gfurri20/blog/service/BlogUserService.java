@@ -26,7 +26,7 @@ public class BlogUserService implements IBlogUserService
     }
     
     @Override
-    public void updateUser( Long id, BlogUser user )
+    public void updateUser( BlogUser user )
     {
         blogUserRepository.save(user);
     }  
