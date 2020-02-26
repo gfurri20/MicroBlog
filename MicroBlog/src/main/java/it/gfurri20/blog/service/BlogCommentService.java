@@ -26,7 +26,7 @@ public class BlogCommentService implements IBlogCommentService
     }
     
     @Override
-    public void updateComment( Long id, BlogComment comment )
+    public void updateComment( BlogComment comment )
     {
         blogCommentRepository.save(comment);
     }

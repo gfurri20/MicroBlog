@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package it.gfurri20.blog.controller;
 
 import it.gfurri20.blog.domain.BlogPost;
@@ -56,7 +52,7 @@ public class BlogPostController
     }
     
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deletePost(@PathVariable("id") Long id, @RequestBody BlogPost post)
+    public ResponseEntity<String> deletePost(@PathVariable("id") Long id)
     {
         blogPostService.destroyPost(id);
         return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
