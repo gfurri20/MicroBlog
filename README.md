@@ -5,6 +5,17 @@
 
  ![](https://img.shields.io/badge/IDE-NetBeans-lightgray?style=for-the-badge&logo=apache%20netbeans%20ide&logoColor=white)
  ![](https://img.shields.io/badge/language-Java-lightblue?style=for-the-badge&logo=java&logoColor=red)
+ 
+ ## Branch name format
+```master``` main branch, only merge is allowed.
+
+```dev``` main developing branch, only merge is allowed.
+
+```dev-[feature]``` created from ```dev```, to develop feature, then merge into ```dev``` (ex.: ```dev-helloworld```).
+
+```docs``` main documentaions branch, only merge is allowed.
+
+```docs-[document]``` created from ```docs```, to write a specific document, then merge into ```docs``` (ex.: ```docs-visionstatement```).
 
  ## Overview
 
