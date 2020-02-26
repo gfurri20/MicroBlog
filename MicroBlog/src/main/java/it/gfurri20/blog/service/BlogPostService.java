@@ -26,7 +26,7 @@ public class BlogPostService implements IBlogPostService
     }
     
     @Override
-    public void updatePost( Long id, BlogPost post )
+    public void updatePost( BlogPost post )
     {
         blogPostRepository.save(post);
     }
