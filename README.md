@@ -18,7 +18,7 @@
 ```docs-[document]``` created from ```docs```, to write a specific document, then merge into ```docs``` (ex.: ```docs-visionstatement```).
 
 ## Swagger
-To see information on the API organized by Swagger:
+To see information about API organized by Swagger:
 
 ```http://localhost:8080/swagger-ui.html```
 
