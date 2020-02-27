@@ -19,11 +19,11 @@
                         <h2 class="my-5">Posts</h2>
                         
                         <div th:each="post : ${posts}">
-                            <div class="card">
+                            <div style="margin-bottom: 20px" class="card">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${post.title}"></h5>
                                     <p class="card-text" th:text="${post.content}"></p>
-                                    <small><a href="@{single/{id}(id=${post.id})}" class="stretched-link">Details...</a></small>
+                                    <small><a th:href="@{/post/single/{id}(id=${post.id})}" class="stretched-link">Details...</a></small>
                                 </div>
                             </div>
                         </div>
