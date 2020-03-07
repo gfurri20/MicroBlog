@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author gfurri20
  */
 @Controller
+@RequestMapping("user")
 public class BlogUserController
 {
     
