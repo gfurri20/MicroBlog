@@ -20,9 +20,10 @@ public interface IBlogPostService
     /**
      * Update a specific <code>BlogPost</code>
      * 
+     * @param id of the post to be updated
      * @param post updated
      */
-    public void updatePost(BlogPost post);
+    public void updatePost(Long id, BlogPost post);
     /**
      * Delete a specific <code>BlogPost</code>
      * 

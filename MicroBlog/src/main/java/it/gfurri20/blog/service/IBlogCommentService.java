@@ -20,9 +20,10 @@ public interface IBlogCommentService
     /**
      * Update a specific <code>BlogComment</code>
      * 
+     * @param id of the comment to be updated
      * @param comment updated
      */
-    public void updateComment(BlogComment comment);
+    public void updateComment(Long id, BlogComment comment);
     /**
      * Delete a specific <code>BlogComment</code>
      * 

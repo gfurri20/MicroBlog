@@ -26,9 +26,15 @@ public class BlogCommentService implements IBlogCommentService
     }
     
     @Override
-    public void updateComment( BlogComment comment )
+    public void updateComment( Long id, BlogComment comment )
     {
-        blogCommentRepository.save(comment);
+        BlogComment oldComment = blogCommentRepository.findById(id).get();
+        oldComment.setAuthor(comment.getAuthor());
+        oldComment.setContent(comment.getContent());
+        oldComment.setCorrelatedPost(comment.getCorrelatedPost());
+        oldComment.setPubblicationDate(comment.getPubblicationDate());
+        
+        blogCommentRepository.save(oldComment);
     }
 
     @Override
