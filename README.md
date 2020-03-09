@@ -30,4 +30,4 @@ To see information about API organized by Swagger:
  The application is developed with SpringBoot.
 
  ## Crow diagram
- ![Diagram](docs/imgs/BlogSchema.png)
+ ![Diagram](docs/imgs/BlogSchema.svg)
