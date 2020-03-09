@@ -17,6 +17,11 @@
 
 ```docs-[document]``` created from ```docs```, to write a specific document, then merge into ```docs``` (ex.: ```docs-visionstatement```).
 
+## Swagger
+To see information about API organized by Swagger:
+
+```http://localhost:8080/swagger-ui.html```
+
  ## Overview
 
  MicroBlog project implements a basic blog based on REST-microservices.
@@ -25,4 +30,4 @@
  The application is developed with SpringBoot.
 
  ## Crow diagram
- ![Diagram](docs/imgs/BlogSchema.png)
+ ![Diagram](docs/imgs/BlogSchema.svg)
