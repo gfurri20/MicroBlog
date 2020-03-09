@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.Getter;
@@ -29,16 +28,12 @@ public class BlogPost implements Serializable {
     private Long id;
     
     @Basic
-    @Getter @Setter
     private String title;
     @Basic
-    @Getter @Setter
     private String content;
     @Basic
-    @Getter @Setter
     private String pubblicationDate;
-    @ManyToOne
-    @Getter @Setter
-    private BlogUser author;
+    @Basic
+    private String author;
     
 }

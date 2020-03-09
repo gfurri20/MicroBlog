@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  *
@@ -25,20 +23,15 @@ public class BlogComment implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter @Setter
     private Long id;
     
     @Basic
-    @Getter @Setter
     private String content;
     @Basic
-    @Getter @Setter
     private String pubblicationDate;
+    @Basic
+    private String author;
     @ManyToOne
-    @Getter @Setter
-    private BlogUser author;
-    @ManyToOne
-    @Getter @Setter
     private BlogPost correlatedPost;
 
 }
