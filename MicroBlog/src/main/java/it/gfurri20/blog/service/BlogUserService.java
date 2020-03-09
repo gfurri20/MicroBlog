@@ -26,9 +26,14 @@ public class BlogUserService implements IBlogUserService
     }
     
     @Override
-    public void updateUser( BlogUser user )
+    public void updateUser( Long id, BlogUser user )
     {
-        blogUserRepository.save(user);
+        BlogUser oldUser = blogUserRepository.findById(id).get();
+        oldUser.setPassword(user.getPassword());
+        oldUser.setSalt(user.getSalt());
+        oldUser.setUsername(user.getUsername());
+        
+        blogUserRepository.save(oldUser);
     }  
 
     @Override

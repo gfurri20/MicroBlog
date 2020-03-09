@@ -19,41 +19,41 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author gfurri20
  */
 @Controller
-@RequestMapping("post")
+@RequestMapping("posts")
 public class BlogPostController
 {
     @Autowired
     BlogPostService blogPostService;
     
-    @RequestMapping(value = "all", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String getAllPosts(Model model)
     {
         model.addAttribute("posts", blogPostService.getAllPosts());
         return "view-posts";
     }
     
-    @RequestMapping(value = "single/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public String getSinglePost(@PathVariable("id") Long id, Model model)
     {
         model.addAttribute("post", blogPostService.getSinglePost(id));
         return "view-post";
     }
     
-    @RequestMapping(value = "new", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> createPost(@RequestBody BlogPost post)
     {
         blogPostService.createPost(post);
         return new ResponseEntity<>("Post created successfully", HttpStatus.CREATED);
     }
     
-    @RequestMapping(value = "update", method = RequestMethod.PUT)
-    public ResponseEntity<String> updatePost(@RequestBody BlogPost post)
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public ResponseEntity<String> updatePost(@PathVariable("id") Long id, @RequestBody BlogPost post)
     {
-        blogPostService.updatePost(post);
+        blogPostService.updatePost(id, post);
         return new ResponseEntity<>("Post updated successfully", HttpStatus.OK);
     }
     
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deletePost(@PathVariable("id") Long id)
     {
         blogPostService.destroyPost(id);

@@ -23,40 +23,40 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author gfurri20
  */
 @Controller
-@RequestMapping("user")
+@RequestMapping("users")
 public class BlogUserController
 {
     
     @Autowired
     BlogUserService blogUserService;
     
-    @RequestMapping(value = "all", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<BlogUser>> getAllUsers()
     {
         return new ResponseEntity<>(blogUserService.getAllUsers(), HttpStatus.OK);
     }
     
-    @RequestMapping(value = "single/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public ResponseEntity<BlogUser> getSingleUser(@PathVariable("id") Long id)
     {
         return new ResponseEntity<>(blogUserService.getSingleUser(id), HttpStatus.OK);
     }
     
-    @RequestMapping(value = "new", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> createUser(@RequestBody BlogUser user)
     {
         blogUserService.createUser(user);
         return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
     }
     
-    @RequestMapping(value = "update", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateUser(@RequestBody BlogUser user)
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateUser(@PathVariable("id") Long id, @RequestBody BlogUser user)
     {
-        blogUserService.updateUser(user);
+        blogUserService.updateUser(id, user);
         return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
     }
     
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long id)
     {
         blogUserService.destroyUser(id);
