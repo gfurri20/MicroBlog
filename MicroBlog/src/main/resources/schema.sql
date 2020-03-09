@@ -8,8 +8,9 @@ CREATE TABLE posts
     id                      INTEGER NOT NULL AUTO_INCREMENT,
     title                   VARCHAR(100) NOT NULL,
     content                 VARCHAR(250) NOT NULL,
-    pubblication_date       VARCHAR(10) NOT NULL,
-    PRIMARY KEY (id),
+    pubblication_date       DATE NOT NULL,
+    author                  VARCHAR(250) NOT NULL,
+    PRIMARY KEY (id)
 );
 
 /**CREATE TABLE comments
