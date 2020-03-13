@@ -20,6 +20,13 @@ import lombok.Data;
 @Table( name = "users" )
 public class BlogUser implements Serializable
 {
+    public BlogUser( String username, String email)
+    {
+        this.username = username;
+        this.email = email;
+    }
+    
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
