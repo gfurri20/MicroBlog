@@ -2,7 +2,7 @@
 package it.gfurri20.blog.domain;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +32,7 @@ public class BlogComment implements Serializable
     private String content;
     
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDate pubblicationDate;
+    private Date pubblicationDate;
     
     @ManyToOne
     private BlogUser author;
