@@ -8,7 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import lombok.Data;
 
 /**
@@ -18,8 +22,8 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "posts")
-public class BlogPost implements Serializable {
-
+public class BlogPost implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +31,12 @@ public class BlogPost implements Serializable {
     
     @Basic
     private String title;
-    @Basic
+    @Lob @Basic
     private String content;
-    @Basic
+    @Temporal( TemporalType.TIMESTAMP )
     private Date pubblicationDate;
-    @Basic
-    private String author;
+    
+    @ManyToOne
+    private BlogUser author;
     
 }

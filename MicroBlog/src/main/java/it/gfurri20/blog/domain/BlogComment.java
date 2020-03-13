@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import lombok.Data;
 
 /**
@@ -19,8 +21,8 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "comments")
-public class BlogComment implements Serializable {
-
+public class BlogComment implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +30,13 @@ public class BlogComment implements Serializable {
     
     @Basic
     private String content;
-    @Basic
+    
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate pubblicationDate;
-    @Basic
-    private String author;
+    
+    @ManyToOne
+    private BlogUser author;
+    
     @ManyToOne
     private BlogPost correlatedPost;
 
