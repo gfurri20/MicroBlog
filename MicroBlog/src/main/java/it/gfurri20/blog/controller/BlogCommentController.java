@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author gfurri20
  */
 @Controller
-@RequestMapping("comment")
+@RequestMapping("comments")
 public class BlogCommentController
 {
     
@@ -39,24 +39,24 @@ public class BlogCommentController
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> createComment(@RequestBody BlogComment comment)
+    public ResponseEntity createComment(@RequestBody BlogComment comment)
     {
         blogCommentService.createComment(comment);
-        return new ResponseEntity<>("Comment created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateComment(@PathVariable("id") Long id, @RequestBody BlogComment comment)
+    public ResponseEntity updateComment(@PathVariable("id") Long id, @RequestBody BlogComment comment)
     {
         blogCommentService.updateComment(id, comment);
-        return new ResponseEntity<>("Comment updated successfully", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteComment(@PathVariable("id") Long id)
+    public ResponseEntity deleteComment(@PathVariable("id") Long id)
     {
         blogCommentService.destroyComment(id);
-        return new ResponseEntity<>("Comment deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
 }

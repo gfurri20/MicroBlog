@@ -3,6 +3,7 @@ package it.gfurri20.blog.controller;
 
 import it.gfurri20.blog.domain.BlogPost;
 import it.gfurri20.blog.service.BlogPostService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,38 +27,36 @@ public class BlogPostController
     BlogPostService blogPostService;
     
     @RequestMapping(method = RequestMethod.GET)
-    public String getAllPosts(Model model)
+    public ResponseEntity<List<BlogPost>> getAllPosts()
     {
-        model.addAttribute("posts", blogPostService.getAllPosts());
-        return "view-posts";
+        return new ResponseEntity<>(blogPostService.getAllPosts(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public String getSinglePost(@PathVariable("id") Long id, Model model)
+    public ResponseEntity<BlogPost> getSinglePost(@PathVariable("id") Long id, Model model)
     {
-        model.addAttribute("post", blogPostService.getSinglePost(id));
-        return "view-post";
+        return new ResponseEntity<>(blogPostService.getSinglePost(id), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> createPost(@RequestBody BlogPost post)
+    public ResponseEntity createPost(@RequestBody BlogPost post)
     {
         blogPostService.createPost(post);
-        return new ResponseEntity<>("Post created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<String> updatePost(@PathVariable("id") Long id, @RequestBody BlogPost post)
+    public ResponseEntity updatePost(@PathVariable("id") Long id, @RequestBody BlogPost post)
     {
         blogPostService.updatePost(id, post);
-        return new ResponseEntity<>("Post updated successfully", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deletePost(@PathVariable("id") Long id)
+    public ResponseEntity deletePost(@PathVariable("id") Long id)
     {
         blogPostService.destroyPost(id);
-        return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
 }
