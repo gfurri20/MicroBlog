@@ -2,6 +2,7 @@
 package it.gfurri20.blog.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,36 +10,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author gfurri20
  */
 @Entity
-@Data
 @Table(name = "comments")
-public class BlogComment implements Serializable {
-
+@Data
+@NoArgsConstructor
+public class BlogComment implements Serializable
+{
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter @Setter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Basic
-    @Getter @Setter
     private String content;
-    @Basic
-    @Getter @Setter
-    private String pubblicationDate;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date pubblicationDate;
+    
     @ManyToOne
-    @Getter @Setter
     private BlogUser author;
+    
     @ManyToOne
-    @Getter @Setter
     private BlogPost correlatedPost;
 
 }

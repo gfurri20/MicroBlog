@@ -11,5 +11,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface IBlogPostRepository extends CrudRepository<BlogPost, Long>
 {
-    
+
 }

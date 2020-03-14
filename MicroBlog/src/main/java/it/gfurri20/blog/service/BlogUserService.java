@@ -2,9 +2,9 @@
 package it.gfurri20.blog.service;
 
 import it.gfurri20.blog.domain.BlogUser;
-import it.gfurri20.blog.repository.IBlogUserRepository;
-import java.util.ArrayList;
+import it.gfurri20.blog.repository.BlogUserRepository;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,44 +16,64 @@ import org.springframework.stereotype.Service;
 @Service
 public class BlogUserService implements IBlogUserService
 {
+
     @Autowired
-    IBlogUserRepository blogUserRepository;
-    
+    BlogUserRepository blogUserRepository;
+
     @Override
     public void createUser( BlogUser user )
     {
         blogUserRepository.save(user);
     }
-    
-    @Override
-    public void updateUser( Long id, BlogUser user )
-    {
-        BlogUser oldUser = blogUserRepository.findById(id).get();
-        oldUser.setPassword(user.getPassword());
-        oldUser.setSalt(user.getSalt());
-        oldUser.setUsername(user.getUsername());
-        
-        blogUserRepository.save(oldUser);
-    }  
 
     @Override
     public void destroyUser( Long id )
     {
-        blogUserRepository.delete(getSingleUser(id));
+        blogUserRepository.delete(this.getUserById(id));
     }
 
     @Override
-    public BlogUser getSingleUser( Long id )
+    public BlogUser getUserById( Long id )
     {
-        return blogUserRepository.findById(id).get();
+        try
+        {
+            return blogUserRepository.findById(id).orElseThrow();
+        }
+        catch( NoSuchElementException e )
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public BlogUser getUserByUsername( String username )
+    {
+        try
+        {
+            return blogUserRepository.findByUsername(username).orElseThrow();
+        }
+        catch( NoSuchElementException e )
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public List<BlogUser> getUsers()
+    {
+        return (List<BlogUser>) blogUserRepository.findAll();
+    }
+
+    @Override
+    public void updateUser( Long id, BlogUser user )
+    {
+        BlogUser oldUser = this.getUserById(id);
+        oldUser.setUsername(user.getUsername());
+        oldUser.setEmail(user.getEmail());
+
+        blogUserRepository.save(oldUser);
     }
     
-    @Override
-    public List<BlogUser> getAllUsers()
-    {
-        List<BlogUser> list = new ArrayList<>();
-        blogUserRepository.findAll().forEach(user -> list.add(user));
-        return list;
-    }
+    
 
 }

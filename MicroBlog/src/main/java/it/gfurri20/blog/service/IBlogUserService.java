@@ -1,4 +1,3 @@
-
 package it.gfurri20.blog.service;
 
 import it.gfurri20.blog.domain.BlogUser;
@@ -30,17 +29,25 @@ public interface IBlogUserService
      * @param id of the user to be deleted
      */
     public void destroyUser(Long id);
+    
     /**
-     * Search for a specific <code>BlogUser</code>
+     * Search for a specific <code>BlogUser</code> by its id
      * 
      * @param id
-     * @return the searched user, if exists
+     * @return the searched user, if it not exists return <code>null</code>
      */
-    public BlogUser getSingleUser(Long id);
+    public BlogUser getUserById(Long id);
     /**
      * Search for all users
      * 
      * @return all users which exist
      */
-    public List<BlogUser> getAllUsers();
+    public List<BlogUser> getUsers();
+    /**
+     * Search for a specific <code>BlogUser</code> by its username
+     *
+     * @param username
+     * @return the searched user, if it not exists return <code>null</code>
+     */
+    public BlogUser getUserByUsername(String username);
 }

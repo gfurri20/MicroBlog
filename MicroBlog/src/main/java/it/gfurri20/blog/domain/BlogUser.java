@@ -1,4 +1,5 @@
 
+
 package it.gfurri20.blog.domain;
 
 import java.io.Serializable;
@@ -9,32 +10,34 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author gfurri20
  */
 @Entity
+@Table( name = "users" )
 @Data
-@Table(name = "users")
-public class BlogUser implements Serializable {
-
+@NoArgsConstructor
+public class BlogUser implements Serializable
+{
+    public BlogUser( String username, String email)
+    {
+        this.username = username;
+        this.email = email;
+    }
+    
+    
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter @Setter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Basic
+    private String username;
     
     @Basic
-    @Getter @Setter
-    private String username;
-    @Basic
-    @Getter @Setter
-    private String password;
-    @Basic
-    @Getter @Setter
-    private String salt;
+    private String email;
     
 }

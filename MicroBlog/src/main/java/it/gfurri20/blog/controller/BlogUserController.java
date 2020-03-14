@@ -5,8 +5,10 @@
  */
 package it.gfurri20.blog.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import it.gfurri20.blog.domain.BlogUser;
-import it.gfurri20.blog.service.BlogUserService;
+import it.gfurri20.blog.service.IBlogUserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,45 +24,89 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  * @author gfurri20
  */
+@Api(tags = {"User"})
 @Controller
 @RequestMapping("users")
 public class BlogUserController
 {
-    
     @Autowired
-    BlogUserService blogUserService;
+    IBlogUserService blogUserService;
     
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<BlogUser>> getAllUsers()
+    @ApiOperation(value = "Returns all saved users")
+    public ResponseEntity<List<BlogUser>> getUsers()
     {
-        return new ResponseEntity<>(blogUserService.getAllUsers(), HttpStatus.OK);
+        return new ResponseEntity<>(blogUserService.getUsers(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<BlogUser> getSingleUser(@PathVariable("id") Long id)
+    @ApiOperation(value = "Returns a user by its id")
+    public ResponseEntity<BlogUser> getUserById(@PathVariable Long id)
     {
-        return new ResponseEntity<>(blogUserService.getSingleUser(id), HttpStatus.OK);
+        if( blogUserService.getUserById(id) != null )
+        {
+            return new ResponseEntity<BlogUser>(blogUserService.getUserById(id), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> createUser(@RequestBody BlogUser user)
+    @ApiOperation(value = "Creates a new user")
+    public ResponseEntity createUser(@RequestBody BlogUser user)
     {
-        blogUserService.createUser(user);
-        return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
+        if( user == null )
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else if( blogUserService.getUserByUsername(user.getUsername()) == null )
+        {
+            blogUserService.createUser(user);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateUser(@PathVariable("id") Long id, @RequestBody BlogUser user)
+    @ApiOperation(value = "Updates an user")
+    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody BlogUser user)
     {
-        blogUserService.updateUser(id, user);
-        return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
+        if( blogUserService.getUserById(id) == null )
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else if( blogUserService.getUserById(id) != null )
+        {
+            blogUserService.updateUser(id, user);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id)
+    @ApiOperation(value = "Deletes an user")
+    public ResponseEntity deleteUser(@PathVariable Long id)
     {
-        blogUserService.destroyUser(id);
-        return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+        if( blogUserService.getUserById(id) == null )
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else if( blogUserService.getUserById(id) != null )
+        {
+            blogUserService.destroyUser(id);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
     }
-    
 }

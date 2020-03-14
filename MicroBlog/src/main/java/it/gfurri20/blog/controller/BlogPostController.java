@@ -1,63 +1,101 @@
 
 package it.gfurri20.blog.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import it.gfurri20.blog.domain.BlogPost;
-import it.gfurri20.blog.service.BlogPostService;
+import it.gfurri20.blog.service.IBlogPostService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
  *
  * @author gfurri20
  */
-@Controller
+@Api(tags = {"Post"})
+@RestController
 @RequestMapping("posts")
 public class BlogPostController
 {
     @Autowired
-    BlogPostService blogPostService;
+    IBlogPostService blogPostService;
     
     @RequestMapping(method = RequestMethod.GET)
-    public String getAllPosts(Model model)
+    @ApiOperation(value = "Returns all saved posts")
+    public ResponseEntity<List<BlogPost>> getPosts()
     {
-        model.addAttribute("posts", blogPostService.getAllPosts());
-        return "view-posts";
+        return new ResponseEntity<>(blogPostService.getPosts(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public String getSinglePost(@PathVariable("id") Long id, Model model)
+    @ApiOperation(value = "Returns a post by its id")
+    public ResponseEntity<BlogPost> getPostById(@PathVariable("id") Long id)
     {
-        model.addAttribute("post", blogPostService.getSinglePost(id));
-        return "view-post";
+        if( blogPostService.getPostById(id) != null )
+        {
+            return new ResponseEntity<BlogPost>(blogPostService.getPostById(id), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> createPost(@RequestBody BlogPost post)
+    @ApiOperation(value = "Creates a new post")
+    public ResponseEntity createPost(@RequestBody BlogPost post)
     {
-        blogPostService.createPost(post);
-        return new ResponseEntity<>("Post created successfully", HttpStatus.CREATED);
+        if( post == null )
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else
+        {
+            blogPostService.createPost(post);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<String> updatePost(@PathVariable("id") Long id, @RequestBody BlogPost post)
+    @ApiOperation(value = "Updates a post")
+    public ResponseEntity updatePost(@PathVariable("id") Long id, @RequestBody BlogPost post)
     {
-        blogPostService.updatePost(id, post);
-        return new ResponseEntity<>("Post updated successfully", HttpStatus.OK);
+        if( blogPostService.getPostById(id) == null )
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else
+        {
+            blogPostService.updatePost(id, post);
+            return new ResponseEntity(HttpStatus.OK);
+        }
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deletePost(@PathVariable("id") Long id)
+    @ApiOperation(value = "Deletes a post")
+    public ResponseEntity deletePost(@PathVariable("id") Long id)
     {
-        blogPostService.destroyPost(id);
-        return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
+        if( blogPostService.getPostById(id) == null )
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else if( blogPostService.getPostById(id) != null )
+        {
+            blogPostService.destroyPost(id);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
     }
     
 }
