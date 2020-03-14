@@ -35,13 +35,13 @@ public interface IBlogPostService
      * Search for a specific <code>BlogPost</code>
      * 
      * @param id
-     * @return the searched post, if exists
+     * @return the searched post, if it not exists <code>null</code>
      */
-    public BlogPost getSinglePost(Long id);
+    public BlogPost getPostById(Long id);
     /**
      * Search for all posts
      * 
      * @return all posts which exist
      */
-    public List<BlogPost> getAllPosts();
+    public List<BlogPost> getPosts();
 }

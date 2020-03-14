@@ -35,15 +35,15 @@ public interface IBlogCommentService
      * Search for a specific <code>BlogComment</code>
      * 
      * @param id
-     * @return the searched comment, if exists
+     * @return the searched comment, if it not exists <code>null</code>
      */
-    public BlogComment getSingleComment(Long id);
+    public BlogComment getCommentById(Long id);
     /**
      * Search for all comments
      * 
      * @return all comments which exist
      */
-    public List<BlogComment> getAllComment();
+    public List<BlogComment> getComments();
     /**
      * Search for all <code>BlogComment</code>s which are correlated to a specific <code>BlogPost</code>
      * 

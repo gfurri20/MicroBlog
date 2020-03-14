@@ -1,62 +1,98 @@
 
 package it.gfurri20.blog.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import it.gfurri20.blog.domain.BlogPost;
-import it.gfurri20.blog.service.BlogPostService;
+import it.gfurri20.blog.service.IBlogPostService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
  *
  * @author gfurri20
  */
-@Controller
+@Api(tags = {"Post"})
+@RestController
 @RequestMapping("posts")
 public class BlogPostController
 {
     @Autowired
-    BlogPostService blogPostService;
+    IBlogPostService blogPostService;
     
     @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation(value = "Returns all saved posts")
     public ResponseEntity<List<BlogPost>> getAllPosts()
     {
-        return new ResponseEntity<>(blogPostService.getAllPosts(), HttpStatus.OK);
+        return new ResponseEntity<>(blogPostService.getPosts(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<BlogPost> getSinglePost(@PathVariable("id") Long id, Model model)
+    @ApiOperation(value = "Returns a post by its id")
+    public ResponseEntity<BlogPost> getSinglePost(@PathVariable("id") Long id)
     {
-        return new ResponseEntity<>(blogPostService.getSinglePost(id), HttpStatus.OK);
+        return new ResponseEntity<>(blogPostService.getPostById(id), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.POST)
+    @ApiOperation(value = "Creates a new post")
     public ResponseEntity createPost(@RequestBody BlogPost post)
     {
-        blogPostService.createPost(post);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        if( post == null )
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else if( blogPostService.getPostById(post.getId()) == null )
+        {
+            blogPostService.createPost(post);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @ApiOperation(value = "Updates a post")
     public ResponseEntity updatePost(@PathVariable("id") Long id, @RequestBody BlogPost post)
     {
-        blogPostService.updatePost(id, post);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if( blogPostService.getPostById(id) == null )
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else
+        {
+            blogPostService.updatePost(id, post);
+            return new ResponseEntity(HttpStatus.OK);
+        }
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "Deletes a post")
     public ResponseEntity deletePost(@PathVariable("id") Long id)
     {
-        blogPostService.destroyPost(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if( blogPostService.getPostById(id) == null )
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else if( blogPostService.getPostById(id) != null )
+        {
+            blogPostService.destroyPost(id);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
     }
     
 }

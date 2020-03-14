@@ -3,8 +3,8 @@ package it.gfurri20.blog.service;
 
 import it.gfurri20.blog.domain.BlogPost;
 import it.gfurri20.blog.repository.IBlogPostRepository;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,22 +40,27 @@ public class BlogPostService implements IBlogPostService
     @Override
     public void destroyPost( Long id )
     {
-        blogPostRepository.delete(getSinglePost(id));
+        blogPostRepository.delete(getPostById(id));
     }
 
 
     @Override
-    public BlogPost getSinglePost( Long id )
+    public BlogPost getPostById( Long id )
     {
-        return blogPostRepository.findById(id).get();
+        try
+        {
+            return blogPostRepository.findById(id).orElseThrow();
+        }
+        catch( NoSuchElementException e )
+        {
+            return null;
+        }
     }
 
     @Override
-    public List<BlogPost> getAllPosts()
+    public List<BlogPost> getPosts()
     {
-        List<BlogPost> list = new ArrayList<>();
-        blogPostRepository.findAll().forEach(post -> list.add(post));
-        return list;
+        return (List<BlogPost>) blogPostRepository.findAll();
     }
     
 }

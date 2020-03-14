@@ -3,8 +3,8 @@ package it.gfurri20.blog.service;
 
 import it.gfurri20.blog.domain.BlogComment;
 import it.gfurri20.blog.repository.IBlogCommentRepository;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +18,9 @@ public class BlogCommentService implements IBlogCommentService
 {
     @Autowired
     IBlogCommentRepository blogCommentRepository;
+    
+    @Autowired
+    IBlogPostService  blogPostService;
 
     @Override
     public void createComment( BlogComment comment )
@@ -40,30 +43,33 @@ public class BlogCommentService implements IBlogCommentService
     @Override
     public void destroyComment( Long id )
     {
-        blogCommentRepository.delete(getSingleComment(id));
+        blogCommentRepository.delete(getCommentById(id));
     }
 
     
     @Override
-    public BlogComment getSingleComment( Long id )
+    public BlogComment getCommentById( Long id )
     {
-        return blogCommentRepository.findById(id).get();
+        try
+        {
+            return blogCommentRepository.findById(id).orElseThrow();
+        }
+        catch( NoSuchElementException e )
+        {
+            return null;
+        }
     }
     
     @Override
-    public List<BlogComment> getAllComment()
+    public List<BlogComment> getComments()
     {
-        List<BlogComment> list = new ArrayList<>();
-        blogCommentRepository.findAll().forEach(comment -> list.add(comment));
-        return list;
+        return (List<BlogComment>) blogCommentRepository.findAll();
     }
     
     @Override
     public List<BlogComment> getCommentsByPost( Long id )
     {
-        List<BlogComment> list = new ArrayList<>();
-        blogCommentRepository.findAllByCorrelatedPostId(id).forEach(comment -> list.add(comment));
-        return list;
+        return (List<BlogComment>) blogCommentRepository.findByCorrelatedPost(blogPostService.getPostById(id));
     }
 
 }

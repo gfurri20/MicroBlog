@@ -14,14 +14,16 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author gfurri20
  */
 @Entity
-@Data
 @Table(name = "posts")
+@Data
+@NoArgsConstructor
 public class BlogPost implements Serializable
 {
     private static final long serialVersionUID = 1L;

@@ -10,14 +10,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author gfurri20
  */
 @Entity
-@Data
 @Table( name = "users" )
+@Data
+@NoArgsConstructor
 public class BlogUser implements Serializable
 {
     public BlogUser( String username, String email)
