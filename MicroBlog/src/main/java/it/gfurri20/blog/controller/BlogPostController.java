@@ -30,16 +30,23 @@ public class BlogPostController
     
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Returns all saved posts")
-    public ResponseEntity<List<BlogPost>> getAllPosts()
+    public ResponseEntity<List<BlogPost>> getPosts()
     {
         return new ResponseEntity<>(blogPostService.getPosts(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Returns a post by its id")
-    public ResponseEntity<BlogPost> getSinglePost(@PathVariable("id") Long id)
+    public ResponseEntity<BlogPost> getPostById(@PathVariable("id") Long id)
     {
-        return new ResponseEntity<>(blogPostService.getPostById(id), HttpStatus.OK);
+        if( blogPostService.getPostById(id) != null )
+        {
+            return new ResponseEntity<BlogPost>(blogPostService.getPostById(id), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
     
     @RequestMapping(method = RequestMethod.POST)
@@ -50,14 +57,10 @@ public class BlogPostController
         {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        else if( blogPostService.getPostById(post.getId()) == null )
+        else
         {
             blogPostService.createPost(post);
             return new ResponseEntity(HttpStatus.CREATED);
-        }
-        else
-        {
-            return new ResponseEntity(HttpStatus.CONFLICT);
         }
     }
     

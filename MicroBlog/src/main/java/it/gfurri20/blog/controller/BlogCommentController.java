@@ -31,16 +31,23 @@ public class BlogCommentController
     
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Returns all saved comments")
-    public ResponseEntity<List<BlogComment>> getAllComments()
+    public ResponseEntity<List<BlogComment>> getComments()
     {
         return new ResponseEntity<>(blogCommentService.getComments(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Returns a comment by its id")
-    public ResponseEntity<BlogComment> getSingleComment(@PathVariable("id") Long id)
+    public ResponseEntity getCommentById(@PathVariable("id") Long id)
     {
-        return new ResponseEntity<>(blogCommentService.getCommentById(id), HttpStatus.OK);
+        if( blogCommentService.getCommentById(id) != null )
+        {
+            return new ResponseEntity<BlogComment>(blogCommentService.getCommentById(id), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
     
     @RequestMapping(method = RequestMethod.POST)

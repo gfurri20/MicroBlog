@@ -34,16 +34,23 @@ public class BlogUserController
     
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Returns all saved users")
-    public ResponseEntity<List<BlogUser>> getAllUsers()
+    public ResponseEntity<List<BlogUser>> getUsers()
     {
         return new ResponseEntity<>(blogUserService.getUsers(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Returns a user by its id")
-    public ResponseEntity<BlogUser> getSingleUser(@PathVariable Long id)
+    public ResponseEntity<BlogUser> getUserById(@PathVariable Long id)
     {
-        return new ResponseEntity<>(blogUserService.getUserById(id), HttpStatus.OK);
+        if( blogUserService.getUserById(id) != null )
+        {
+            return new ResponseEntity<BlogUser>(blogUserService.getUserById(id), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
     
     @RequestMapping(method = RequestMethod.POST)
