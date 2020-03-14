@@ -103,4 +103,11 @@ public class BlogCommentController
         }
     }
     
+    @RequestMapping(value = "/post/{postId}")
+    @ApiOperation(value = "Returns all comments related to one post")
+    public ResponseEntity<List<BlogComment>> getCommentsByPost(@PathVariable("postId") Long id)
+    {
+        return new ResponseEntity<>(blogCommentService.getCommentsByPost(id), HttpStatus.OK);
+    }
+    
 }
