@@ -32,7 +32,14 @@ public class BlogPostController
     @ApiOperation(value = "Returns all saved posts")
     public ResponseEntity<List<BlogPost>> getPosts()
     {
-        return new ResponseEntity<>(blogPostService.getPosts(), HttpStatus.OK);
+        if( !(blogPostService.getPosts().isEmpty()) )
+        {
+            return new ResponseEntity<>(blogPostService.getPosts(), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -41,11 +48,11 @@ public class BlogPostController
     {
         if( blogPostService.getPostById(id) != null )
         {
-            return new ResponseEntity<BlogPost>(blogPostService.getPostById(id), HttpStatus.OK);
+            return new ResponseEntity<>(blogPostService.getPostById(id), HttpStatus.OK);
         }
         else
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
     
@@ -55,7 +62,7 @@ public class BlogPostController
     {
         if( post == null )
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else
         {
@@ -70,12 +77,12 @@ public class BlogPostController
     {
         if( blogPostService.getPostById(id) == null )
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else
         {
             blogPostService.updatePost(id, post);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
     }
     
@@ -85,16 +92,30 @@ public class BlogPostController
     {
         if( blogPostService.getPostById(id) == null )
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else if( blogPostService.getPostById(id) != null )
         {
             blogPostService.destroyPost(id);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         else
         {
             return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+    }
+    
+    @RequestMapping(value = "{id}/comments", method = RequestMethod.GET)
+    @ApiOperation(value = "Returns all comments refer to a specific post")
+    public ResponseEntity getCommentsByPost(@PathVariable("id") Long id)
+    {
+        if( !(blogPostService.getCommentsByPost(id).isEmpty()) )
+        {
+            return new ResponseEntity<>(blogPostService.getCommentsByPost(id), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
     

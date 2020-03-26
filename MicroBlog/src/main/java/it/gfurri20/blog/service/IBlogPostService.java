@@ -1,6 +1,7 @@
 
 package it.gfurri20.blog.service;
 
+import it.gfurri20.blog.domain.BlogComment;
 import it.gfurri20.blog.domain.BlogPost;
 import java.util.List;
 
@@ -44,4 +45,11 @@ public interface IBlogPostService
      * @return all posts which exist
      */
     public List<BlogPost> getPosts();
+    /**
+     * Search for all <code>BlogComment</code>s which are correlated to a specific <code>BlogPost</code>
+     * 
+     * @param id of the specific post
+     * @return comments correlated to the specified post, if exist
+     */
+    public List<BlogComment> getCommentsByPost(Long id);
 }

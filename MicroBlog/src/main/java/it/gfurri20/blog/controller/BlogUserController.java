@@ -36,7 +36,14 @@ public class BlogUserController
     @ApiOperation(value = "Returns all saved users")
     public ResponseEntity<List<BlogUser>> getUsers()
     {
-        return new ResponseEntity<>(blogUserService.getUsers(), HttpStatus.OK);
+        if( !(blogUserService.getUsers().isEmpty()) )
+        {
+            return new ResponseEntity<>(blogUserService.getUsers(), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -45,11 +52,11 @@ public class BlogUserController
     {
         if( blogUserService.getUserById(id) != null )
         {
-            return new ResponseEntity<BlogUser>(blogUserService.getUserById(id), HttpStatus.OK);
+            return new ResponseEntity<>(blogUserService.getUserById(id), HttpStatus.OK);
         }
         else
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
     
@@ -59,7 +66,7 @@ public class BlogUserController
     {
         if( user == null )
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else if( blogUserService.getUserByUsername(user.getUsername()) == null )
         {
@@ -78,12 +85,12 @@ public class BlogUserController
     {
         if( blogUserService.getUserById(id) == null )
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else if( blogUserService.getUserById(id) != null )
         {
             blogUserService.updateUser(id, user);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         else
         {
@@ -97,12 +104,12 @@ public class BlogUserController
     {
         if( blogUserService.getUserById(id) == null )
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else if( blogUserService.getUserById(id) != null )
         {
             blogUserService.destroyUser(id);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         else
         {

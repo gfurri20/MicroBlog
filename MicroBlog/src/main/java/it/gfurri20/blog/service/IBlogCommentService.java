@@ -44,11 +44,4 @@ public interface IBlogCommentService
      * @return all comments which exist
      */
     public List<BlogComment> getComments();
-    /**
-     * Search for all <code>BlogComment</code>s which are correlated to a specific <code>BlogPost</code>
-     * 
-     * @param id of the specific post
-     * @return comments correlated to the specified post, if exist
-     */
-    public List<BlogComment> getCommentsByPost(Long id);
 }

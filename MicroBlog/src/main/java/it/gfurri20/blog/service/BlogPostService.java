@@ -1,7 +1,9 @@
 
 package it.gfurri20.blog.service;
 
+import it.gfurri20.blog.domain.BlogComment;
 import it.gfurri20.blog.domain.BlogPost;
+import it.gfurri20.blog.repository.IBlogCommentRepository;
 import it.gfurri20.blog.repository.IBlogPostRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -18,6 +20,9 @@ public class BlogPostService implements IBlogPostService
 {
     @Autowired
     IBlogPostRepository blogPostRepository;
+    
+    @Autowired
+    IBlogCommentRepository blogCommentRepository;
 
     @Override
     public void createPost( BlogPost post )
@@ -63,4 +68,9 @@ public class BlogPostService implements IBlogPostService
         return (List<BlogPost>) blogPostRepository.findAll();
     }
     
+    @Override
+    public List<BlogComment> getCommentsByPost( Long id )
+    {
+        return (List<BlogComment>) blogCommentRepository.findByCorrelatedPost(getPostById(id));
+    }
 }
