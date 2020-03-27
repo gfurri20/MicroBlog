@@ -12,7 +12,7 @@
             var APP =
             {
                 get_posts : function() {
-                    $.get("/posts", function(data) {
+                    $.get("http://localhost:8081/posts", function(data) {
                         $.each(data, function(index, value) {
                             var pt = $("#container").find(".posts").clone();
 
