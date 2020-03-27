@@ -33,7 +33,14 @@ public class BlogCommentController
     @ApiOperation(value = "Returns all saved comments")
     public ResponseEntity<List<BlogComment>> getComments()
     {
-        return new ResponseEntity<>(blogCommentService.getComments(), HttpStatus.OK);
+        if( !(blogCommentService.getComments().isEmpty()) )
+        {
+            return new ResponseEntity<>(blogCommentService.getComments(), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -42,11 +49,11 @@ public class BlogCommentController
     {
         if( blogCommentService.getCommentById(id) != null )
         {
-            return new ResponseEntity<BlogComment>(blogCommentService.getCommentById(id), HttpStatus.OK);
+            return new ResponseEntity<>(blogCommentService.getCommentById(id), HttpStatus.OK);
         }
         else
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
     
@@ -71,12 +78,12 @@ public class BlogCommentController
     {
         if( blogCommentService.getCommentById(id) == null )
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else if( blogCommentService.getCommentById(id) != null )
         {
             blogCommentService.updateComment(id, comment);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         else
         {
@@ -90,24 +97,17 @@ public class BlogCommentController
     {
         if( blogCommentService.getCommentById(id) == null )
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else if( blogCommentService.getCommentById(id) != null )
         {
             blogCommentService.destroyComment(id);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         else
         {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
-    }
-    
-    @RequestMapping(value = "/post/{postId}")
-    @ApiOperation(value = "Returns all comments related to one post")
-    public ResponseEntity<List<BlogComment>> getCommentsByPost(@PathVariable("postId") Long id)
-    {
-        return new ResponseEntity<>(blogCommentService.getCommentsByPost(id), HttpStatus.OK);
     }
     
 }

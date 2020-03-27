@@ -65,11 +65,5 @@ public class BlogCommentService implements IBlogCommentService
     {
         return (List<BlogComment>) blogCommentRepository.findAll();
     }
-    
-    @Override
-    public List<BlogComment> getCommentsByPost( Long id )
-    {
-        return (List<BlogComment>) blogCommentRepository.findByCorrelatedPost(blogPostService.getPostById(id));
-    }
 
 }
