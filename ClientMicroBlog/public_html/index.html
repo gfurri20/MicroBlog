@@ -12,36 +12,51 @@
             var APP =
             {
                 get_posts : function() {
-                    $.get("http://localhost:8081/posts", function(data) {
-                        $.each(data, function(index, value) {
-                            var pt = $("#container").find(".posts").clone();
+                    $.ajax(
+                        {
+                            url: "http://localhost:8081/posts",
+                            method: "GET",
+                            success: function(data, status) {
+                                $.each(data, function(index, value) {
+                                    var pt = $("#postscontainer").find(".posts").clone();
 
-                            pt.find(".title").append(value['title']);
-                            pt.find(".content").append(value['content']);
-                            pt.find(".author").append(value['author']['username']);
-                            pt.find(".date").append(value['pubblicationDate']);
+                                    pt.find(".title").append(value['title']);
+                                    pt.find(".content").append(value['content']);
+                                    pt.find(".author").append(value['author']['username']);
+                                    pt.find(".date").append(value['pubblicationDate']);
+                                    pt.append("<a href='post.html?id=" + value['id'] + "'>Comments</a>");
 
-                            $("#postscontainer").append(pt);
+                                    $("#maincontainer").append(pt);
+                                })
+                            },
+                            statusCode: {
+                                404: function() {
+                                    print_error(404, "Not Found");
+                                }
+                            }
                         });
-                    });
                 },
-                
-                init_buttons : function() {
-                    $("#btn_getposts").click(APP.get_posts);
-                }
             };
 
             $( document ).ready(function() {
                 APP.get_posts();
             });
+
+            function print_error(status, msg) {
+                var pt = $("#errorcontainer").find(".error").clone();
+                pt.find(".errorstatus").append(status);
+                pt.find(".errorcomment").append(msg);
+                $("#maincontainer").append(pt);
+            }
+
         </script>
     </head>
     <body>
-        <div id="postscontainer">
+        <div id="maincontainer">
 
         </div>
 
-        <div id="container" style="display: none;">
+        <div id="postscontainer" style="display: none;">
             <div class="posts" style="border:3px solid black;">
                 <p class="title">Title: </p>
                 <p class="content">Content: </p>
@@ -49,5 +64,14 @@
                 <p class="date">On: </p>
             </div>
         </div>
+
+        <div id="errorcontainer" style="display: none;">
+            <div class="error" style="border:3px solid red;">
+                <h3 class="errorstatus"></h3>
+                <hr>
+                <p class="errorcomment"></p>
+            </div>
+        </div>
+
     </body>
 </html>
