@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ public class BlogCommentController
     IBlogCommentService blogCommentService;
     
     @RequestMapping(method = RequestMethod.GET)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Returns all saved comments")
     public ResponseEntity<List<BlogComment>> getComments()
     {
@@ -44,6 +46,7 @@ public class BlogCommentController
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Returns a comment by its id")
     public ResponseEntity getCommentById(@PathVariable("id") Long id)
     {
@@ -58,6 +61,7 @@ public class BlogCommentController
     }
     
     @RequestMapping(method = RequestMethod.POST)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Creates a new comment")
     public ResponseEntity createComment(@RequestBody BlogComment comment)
     {
@@ -73,6 +77,7 @@ public class BlogCommentController
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Updates a comment")
     public ResponseEntity updateComment(@PathVariable("id") Long id, @RequestBody BlogComment comment)
     {
@@ -92,6 +97,7 @@ public class BlogCommentController
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Deletes a comment")
     public ResponseEntity deleteComment(@PathVariable("id") Long id)
     {
