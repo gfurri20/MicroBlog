@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Posts</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+        
+        <script>
+            var APP =
+            {
+                get_posts : function() {
+                    $.get("/posts", function(data) {
+                        $.each(data, function(index, value) {
+                            var pt = $("#container").find(".posts").clone();
+
+                            pt.find(".title").append(value['title']);
+                            pt.find(".content").append(value['content']);
+                            pt.find(".author").append(value['author']['username']);
+
+                            $("#postscontainer").append(pt);
+                        });
+                    });
+                },
+                
+                init_buttons : function() {
+                    $("#btn_getposts").click(APP.get_posts);
+                }
+            };
+
+            $( document ).ready(function() {
+                APP.get_posts();
+            });
+        </script>
+    </head>
+    <body>
+        <!--<button id="btn_getposts">Visualizza i post</button>-->
+
+        <div id="postscontainer">
+
+        </div>
+
+        <div id="container" style="display: none;">
+            <div class="posts" style="border:3px solid black;">
+                <p class="title">Titolo: </p>
+                <p class="content">Contenuto: </p>
+                <p class="author">Autore: </p>
+            </div>
+        </div>
+    </body>
+</html>
