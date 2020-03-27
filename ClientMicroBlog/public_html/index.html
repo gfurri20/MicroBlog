@@ -19,6 +19,7 @@
                             pt.find(".title").append(value['title']);
                             pt.find(".content").append(value['content']);
                             pt.find(".author").append(value['author']['username']);
+                            pt.find(".date").append(value['pubblicationDate']);
 
                             $("#postscontainer").append(pt);
                         });
@@ -36,17 +37,16 @@
         </script>
     </head>
     <body>
-        <!--<button id="btn_getposts">Visualizza i post</button>-->
-
         <div id="postscontainer">
 
         </div>
 
         <div id="container" style="display: none;">
             <div class="posts" style="border:3px solid black;">
-                <p class="title">Titolo: </p>
-                <p class="content">Contenuto: </p>
-                <p class="author">Autore: </p>
+                <p class="title">Title: </p>
+                <p class="content">Content: </p>
+                <p class="author">Author: </p>
+                <p class="date">On: </p>
             </div>
         </div>
     </body>
