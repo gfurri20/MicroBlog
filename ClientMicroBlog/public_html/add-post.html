@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Posts</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+        
+        <script>
+            var APP =
+            {
+                create_user : function() {
+
+                    var in_username = $("#username").val();
+                    var in_email = $("#email").val();
+
+                    $.ajax(
+                    {
+                        url: "http://localhost:8081/users",
+                        method: "POST",
+                        data: JSON.stringify({ username: in_username, email: in_email}),
+                        contentType: "application/json",
+                        success: function() {
+                            alert("Nuovo utente creato");
+                        }
+                    })
+                }
+            };
+
+            $( document ).ready(function() {
+                $("#btn_submit").click(APP.create_user);
+            });
+
+            function print_error(status, msg) {
+                var pt = $("#errorcontainer").find(".error").clone();
+                pt.find(".errorstatus").append(status);
+                pt.find(".errorcomment").append(msg);
+                $("#maincontainer").append(pt);
+            }
+
+        </script>
+    </head>
+    <body>
+        
+        username: <input type="text" id="username">
+        email: <input type="email" id="email">
+        <input type="button" id="btn_submit" value="Add User">
+
+    </body>
+</html>
