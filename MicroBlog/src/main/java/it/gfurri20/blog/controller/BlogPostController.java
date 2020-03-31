@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import it.gfurri20.blog.domain.BlogPost;
 import it.gfurri20.blog.service.IBlogPostService;
+import it.gfurri20.blog.service.IBlogUserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -28,6 +30,9 @@ public class BlogPostController
 {
     @Autowired
     IBlogPostService blogPostService;
+    
+    @Autowired
+    IBlogUserService blogUserService;
     
     @RequestMapping(method = RequestMethod.GET)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -62,15 +67,15 @@ public class BlogPostController
     @RequestMapping(method = RequestMethod.POST)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Creates a new post")
-    public ResponseEntity createPost(@RequestBody BlogPost post)
+    public ResponseEntity createPostByUsername(@RequestParam("username") String username, @RequestBody BlogPost post)
     {
-        if( post == null )
+        if( this.blogUserService.getUserByUsername(username) == null )
         {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else
         {
-            blogPostService.createPost(post);
+            blogPostService.createPostByUsername(username, post);
             return new ResponseEntity(HttpStatus.CREATED);
         }
     }

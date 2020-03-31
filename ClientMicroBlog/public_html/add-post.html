@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Add post</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+        
+        <script>
+            var APP =
+            {
+                create_post : function() {
+
+                    var in_username = $("#username").val();
+                    var in_title = $("#title").val();
+                    var in_content = $("#content").val();
+
+                    $.ajax(
+                    {
+                        url: "http://localhost:8081/posts?username=" + in_username,
+                        method: "POST",
+                        data: JSON.stringify({ title: in_title, content: in_content }),
+                        contentType: "application/json",
+                        success: function() {
+                            alert("Post created!");
+                        },
+                        statusCode: {
+                            404: function() {
+                                print_error(404, "User not found!")
+                            }
+                        }
+                    })
+                }
+            };
+
+            $( document ).ready(function() {
+                $("#btn_submit").click(APP.create_post);
+            });
+
+            function print_error(status, msg) {
+                var pt = $("#errorcontainer").find(".error").clone();
+                pt.find(".errorstatus").append(status);
+                pt.find(".errorcomment").append(msg);
+                $("#maincontainer").append(pt);
+            }
+
+        </script>
+    </head>
+    <body>
+        
+        <div id="maincontainer">
+
+        </div>
+        
+        <div class="form">
+            username: <input type="text" id="username"><br><br>
+
+            title: <input type="text" id="title"><br>
+            content: <textarea cols="20" rows="4" id="content"></textarea><br>
+            <input type="button" id="btn_submit" value="Add Post">
+        </div>
+
+        <div id="errorcontainer" style="display: none;">
+            <div class="error" style="border:3px solid red;">
+                <h3 class="errorstatus"></h3>
+                <hr>
+                <p class="errorcomment"></p>
+            </div>
+        </div>
+
+    </body>
+</html>
