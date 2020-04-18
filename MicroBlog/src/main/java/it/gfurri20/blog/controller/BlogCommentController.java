@@ -35,14 +35,7 @@ public class BlogCommentController
     @ApiOperation(value = "Returns all saved comments")
     public ResponseEntity<List<BlogComment>> getComments()
     {
-        if( !(blogCommentService.getComments().isEmpty()) )
-        {
-            return new ResponseEntity<>(blogCommentService.getComments(), HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(blogCommentService.getComments(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)

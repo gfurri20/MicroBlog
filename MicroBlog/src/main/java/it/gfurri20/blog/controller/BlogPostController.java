@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -39,14 +38,7 @@ public class BlogPostController
     @ApiOperation(value = "Returns all saved posts")
     public ResponseEntity<List<BlogPost>> getPosts()
     {
-        if( !(blogPostService.getPosts().isEmpty()) )
-        {
-            return new ResponseEntity<>(blogPostService.getPosts(), HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(blogPostService.getPosts(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -67,17 +59,10 @@ public class BlogPostController
     @RequestMapping(method = RequestMethod.POST)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Creates a new post")
-    public ResponseEntity createPostByUsername(@RequestParam("username") String username, @RequestBody BlogPost post)
+    public ResponseEntity createPostByUsername(@RequestBody BlogPost post)
     {
-        if( this.blogUserService.getUserByUsername(username) == null )
-        {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        else
-        {
-            blogPostService.createPostByUsername(username, post);
-            return new ResponseEntity(HttpStatus.CREATED);
-        }
+        blogPostService.createPost(post);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
@@ -121,14 +106,7 @@ public class BlogPostController
     @ApiOperation(value = "Returns all comments refer to a specific post")
     public ResponseEntity getCommentsByPost(@PathVariable("id") Long id)
     {
-        if( !(blogPostService.getCommentsByPost(id).isEmpty()) )
-        {
-            return new ResponseEntity<>(blogPostService.getCommentsByPost(id), HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(blogPostService.getCommentsByPost(id), HttpStatus.OK);
     }
     
 }

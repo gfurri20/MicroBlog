@@ -13,12 +13,11 @@ import java.util.List;
 public interface IBlogPostService
 {
     /**
-     * Create a new <code>BlogPost</code> by username
+     * Create a new <code>BlogPost</code>
      * 
-     * @param username of the author
      * @param post new istance
      */
-    public void createPostByUsername( String username, BlogPost post);
+    public void createPost( BlogPost post );
     /**
      * Update a specific <code>BlogPost</code>
      * 

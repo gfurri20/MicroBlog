@@ -29,10 +29,9 @@ public class BlogPostService implements IBlogPostService
     IBlogCommentRepository blogCommentRepository;
 
     @Override
-    public void createPostByUsername( String username, BlogPost post )
+    public void createPost( BlogPost post )
     {
         post.setPubblicationDate(new Date());
-        post.setAuthor(blogUserService.getUserByUsername(username));
         blogPostRepository.save(post);
     }
     

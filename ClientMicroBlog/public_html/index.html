@@ -2,77 +2,26 @@
 
 <html>
     <head>
-        <title>Posts</title>
+        <title>Home</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
-        
-        <script>
-            var APP =
-            {
-                get_posts : function() {
-                    $.ajax(
-                        {
-                            url: "http://localhost:8081/posts",
-                            method: "GET",
-                            success: function(data, status) {
-                                $.each(data, function(index, value) {
-                                    var pt = $("#postscontainer").find(".posts").clone();
-
-                                    pt.find(".title").append(value['title']);
-                                    pt.find(".content").append(value['content']);
-                                    pt.find(".author").append(value['author']['username']);
-                                    pt.find(".date").append(value['pubblicationDate']);
-                                    pt.append("<a href='post.html?id=" + value['id'] + "'>Comments</a>");
-
-                                    $("#maincontainer").append(pt);
-                                });
-                            },
-                            statusCode: {
-                                404: function() {
-                                    print_error(404, "Not Found");
-                                }
-                            }
-                        });
-                },
-            };
-
-            $( document ).ready(function() {
-                APP.get_posts();
-            });
-
-            function print_error(status, msg) {
-                var pt = $("#errorcontainer").find(".error").clone();
-                pt.find(".errorstatus").append(status);
-                pt.find(".errorcomment").append(msg);
-                $("#maincontainer").append(pt);
-            }
-
-        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="scripts/APP.js"></script>
     </head>
     <body>
-        <a href="add-post.html">Add user</a>
-        <div id="maincontainer">
-
-        </div>
-
-        <div id="postscontainer" style="display: none;">
-            <div class="posts" style="border:3px solid black;">
-                <p class="title">Title: </p>
-                <p class="content">Content: </p>
-                <p class="author">Author: </p>
-                <p class="date">On: </p>
+        <div id="main_posts_container">
+            <div id="posts_container">
+                             
             </div>
         </div>
-
-        <div id="errorcontainer" style="display: none;">
-            <div class="error" style="border:3px solid red;">
-                <h3 class="errorstatus"></h3>
-                <hr>
-                <p class="errorcomment"></p>
-            </div>
-        </div>
-
-    </body>
+        
+        
+        <script>
+            //init APP
+            $(document).ready(function() {
+                APP.showPosts();
+            });
+        </script>
+            
 </html>

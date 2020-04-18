@@ -22,6 +22,3 @@ insert into comments (content, pubblication_date, author_id, correlated_post_id)
 
 insert into comments (content, pubblication_date, author_id, correlated_post_id) values
     ('second comment', '2020-03-10', 2, 1);
-
-insert into comments (content, pubblication_date, author_id, correlated_post_id) values
-    ('third comment', '2020-03-13', 2, 2);
