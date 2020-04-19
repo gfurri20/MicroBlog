@@ -32,6 +32,15 @@ var APP =
                         //append the populated template to the posts container
                         $("#posts_container").append(post_template);
                         
+                        //create and append comment form
+                        var comment_form_template = $("#templates").find(".submit_comment_form_template").clone();
+                        comment_form_template.find(".btn_input_comment_submit").attr("id", post["id"]);
+                        comment_form_template.find(".input_comment_content").attr("id", "content" + post["id"]);
+                        post_template.append(comment_form_template);
+                        
+                        //callback for submit comment
+                        $("#" + post["id"]).on("click", APP.submitcomment);
+                        
                         APP.showCommentsByPost(post['id']);
                     });
                 }
@@ -48,19 +57,27 @@ var APP =
                 url: url,
                 method: "GET",
                 success: function(data, status) {
-                    $.each(data, function(index, comment) {
-                        //clone template which will containes infos
-                        var comment_template = $("#templates").find(".comment_container_template").clone();
+                    if(data.length !== 0)
+                    {
+                        //if there are comments create the container which will contain all of them
+                        var comments_template = $("#templates").find(".comments_container_template").clone();
+                        $("#post" + post_id).append(comments_template);
                         
-                        //populate the template
-                        comment_template.find(".comment_content").append(comment["content"]);
-                        comment_template.find(".comment_author").append(comment["author"]["username"]);
-                        
-                        //add to the template an id in order to identify each comments
-                        comment_template.attr("id", "comment" + comment["id"]);
-                        //append the populated template to the comments container
-                        $("#post" + post_id).find(".comments_container_template").append(comment_template);                        
-                    });
+                        $.each(data, function(index, comment)
+                        {
+                            //clone template which will containes infos
+                            var comment_template = $("#templates").find(".comment_container_template").clone();
+
+                            //populate the template
+                            comment_template.find(".comment_content").append(comment["content"]);
+                            comment_template.find(".comment_author").append(comment["author"]["username"]);
+
+                            //add to the template an id in order to identify each comments
+                            comment_template.attr("id", "comment" + comment["id"]);
+                            //append the populated template to the comments container
+                            $("#post" + post_id).find(".comments_container_template").append(comment_template);                        
+                        });
+                    }
                 }
             }
         );
@@ -69,8 +86,8 @@ var APP =
     submitpost : function()
     {
         //gets variables from form
-        var title = $("#post_title").val();
-        var content = $("#post_content").val();
+        var title = $("#input_post_title").val();
+        var content = $("#input_post_content").val();
         
         $.ajax(
             {
@@ -82,20 +99,25 @@ var APP =
                         title: title,
                         content: content,
                         author: {
-                            id: APP.AUTHOR_ID
+                            id: APP.POST_AUTHOR_ID
                         }
                     }
-                )
+                ),
+                statusCode: {
+                    201: function() {
+                        alert("Post successfully created");
+                        window.location.reload();
+                    }
+                }
             }
         );
     },
     
-    submitcomment : function()
+    submitcomment : function(event)
     {
         //gets variables from form
-        var comment_content = $("#comment_content").val();
-        //take the post from an hidden html element
-        var post_id = $("#post_id").val();
+        post_id = event.target.id;
+        var comment_content = $("#content" + post_id).val();
         
         $.ajax(
             {
@@ -109,12 +131,20 @@ var APP =
                             id: post_id
                         },
                         author: {
-                            id: APP.AUTHOR_ID
+                            id: APP.COMMENT_AUTHOR_ID
                         }
                     }
-                )
+                ),
+                statusCode: {
+                    201: function() {
+                        alert("Comment successfully created");
+                        window.location.reload();
+                    }
+                }
             }    
         );
+
+        
     }
 };
 

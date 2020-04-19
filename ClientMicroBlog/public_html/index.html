@@ -11,30 +11,50 @@
     </head>
     <body>
         <div id="main_posts_container">
-            <div id="posts_container">
+            <div id="posts_container" style="border: 4px black solid">
+                
+                <div id="submit_post_form" style="border: 3px orange solid; margin: 5px">
+                    <p><input id="input_post_title" type="text" placeholder="An awesome title..."></p>
+                    <p><textarea id="input_post_content" cols="40" rows="4" placeholder="Some awesome content..."></textarea></p>
+                    <p><button id="btn_input_post_submit">Create Post!</button>
+                </div>
                 
             </div>
         </div>
         
+        <!--Templates----------------------------------------->
+        
         <div id="templates" style="display: none">
-            <div class="post_container_template">
+            
+            <!--Contains ALL posts-->
+            <div class="post_container_template" style="border: 3px solid blue; margin: 5px">
                 
                 <p class="post_title"></p>
                 <p class="post_content"></p>
                 <p class="post_author"></p>
                 <p class="post_date"></p>
                 
-                <div class="comments_container_template">
-
-                </div>
-                
             </div>
             
-            <div class="comment_container_template">
+            <!--Contains ALL comments for each post-->
+            <div class="comments_container_template" style="border: 2px solid green; margin: 5px">
+
+            </div>
+            
+            <!--Contains a single comment-->
+            <div class="comment_container_template" style="border: 1px solid red; margin: 5px">
                 
                 <p class="comment_content"></p>
                 <p class="comment_author"></p>
                 
+            </div>
+            
+            <!--Contains the comment form-->
+            <div class="submit_comment_form_template" style="border: 2px fuchsia solid; margin: 5px">
+                
+                <p><textarea class="input_comment_content" cols="40" rows="2" placeholder="Some awesome content..."></textarea></p>
+                <p><button class="btn_input_comment_submit">Post Comment!</button>
+                    
             </div>
             
         </div>
@@ -43,6 +63,7 @@
             //init APP
             $(document).ready(function() {
                 APP.showPosts();
+                $("#btn_input_post_submit").on("click", APP.submitpost);
             });
         </script>
             
