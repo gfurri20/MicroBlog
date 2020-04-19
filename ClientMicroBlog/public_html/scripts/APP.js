@@ -18,14 +18,18 @@ var APP =
                 method: "GET",
                 success: function(data, status) {
                     $.each(data, function(index, post) {
-                        var post_template = "<div class='post' style='border: 2px solid black'>" +
-                                            "<p><strong>" + post["title"] + "</strong></p>" +
-                                            "<p>" + post["content"] + "</p>" +
-                                            "<p>by " + post["author"]["username"] + "</p>" + 
-                                            "<div class='comments_container" + post["id"] + "'>" +
-                                            "</div>" +
-                                            "</div>";
+                        //clone template which will containes infos
+                        var post_template = $("#templates").find(".post_container_template").clone();
                         
+                        //populate the template
+                        post_template.find(".post_title").append(post["title"]);
+                        post_template.find(".post_content").append(post["content"]);
+                        post_template.find(".post_author").append(post["author"]["username"]);
+                        post_template.find(".post_date").append(post["pubblicationDate"]);
+                        
+                        //add to the template an id in order to identify each posts
+                        post_template.attr("id", "post" + post["id"]);
+                        //append the populated template to the posts container
                         $("#posts_container").append(post_template);
                         
                         APP.showCommentsByPost(post['id']);
@@ -45,9 +49,17 @@ var APP =
                 method: "GET",
                 success: function(data, status) {
                     $.each(data, function(index, comment) {
-                        var comment_template = "<hr><div class='comment'><p><strong>" + comment["author"]["username"] + "</strong></p><p>" + comment["content"] + "</p></div>";
+                        //clone template which will containes infos
+                        var comment_template = $("#templates").find(".comment_container_template").clone();
                         
-                        $(".comments_container" + post_id).append(comment_template);
+                        //populate the template
+                        comment_template.find(".comment_content").append(comment["content"]);
+                        comment_template.find(".comment_author").append(comment["author"]["username"]);
+                        
+                        //add to the template an id in order to identify each comments
+                        comment_template.attr("id", "comment" + comment["id"]);
+                        //append the populated template to the comments container
+                        $("#post" + post_id).find(".comments_container_template").append(comment_template);                        
                     });
                 }
             }
