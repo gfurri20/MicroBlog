@@ -17,7 +17,7 @@ public interface IBlogPostService
      * 
      * @param post new istance
      */
-    public void createPost(BlogPost post);
+    public void createPost( BlogPost post );
     /**
      * Update a specific <code>BlogPost</code>
      * 

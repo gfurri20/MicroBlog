@@ -3,6 +3,7 @@ package it.gfurri20.blog.service;
 
 import it.gfurri20.blog.domain.BlogComment;
 import it.gfurri20.blog.repository.IBlogCommentRepository;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class BlogCommentService implements IBlogCommentService
     @Override
     public void createComment( BlogComment comment )
     {
+        comment.setPubblicationDate(new Date());
         blogCommentRepository.save(comment);
     }
     

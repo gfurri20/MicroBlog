@@ -5,10 +5,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import it.gfurri20.blog.domain.BlogPost;
 import it.gfurri20.blog.service.IBlogPostService;
+import it.gfurri20.blog.service.IBlogUserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,21 +30,19 @@ public class BlogPostController
     @Autowired
     IBlogPostService blogPostService;
     
+    @Autowired
+    IBlogUserService blogUserService;
+    
     @RequestMapping(method = RequestMethod.GET)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Returns all saved posts")
     public ResponseEntity<List<BlogPost>> getPosts()
     {
-        if( !(blogPostService.getPosts().isEmpty()) )
-        {
-            return new ResponseEntity<>(blogPostService.getPosts(), HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(blogPostService.getPosts(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Returns a post by its id")
     public ResponseEntity<BlogPost> getPostById(@PathVariable("id") Long id)
     {
@@ -57,21 +57,16 @@ public class BlogPostController
     }
     
     @RequestMapping(method = RequestMethod.POST)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Creates a new post")
     public ResponseEntity createPost(@RequestBody BlogPost post)
     {
-        if( post == null )
-        {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        else
-        {
-            blogPostService.createPost(post);
-            return new ResponseEntity(HttpStatus.CREATED);
-        }
+        blogPostService.createPost(post);
+        return new ResponseEntity(post.getId(), HttpStatus.CREATED);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Updates a post")
     public ResponseEntity updatePost(@PathVariable("id") Long id, @RequestBody BlogPost post)
     {
@@ -87,6 +82,7 @@ public class BlogPostController
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Deletes a post")
     public ResponseEntity deletePost(@PathVariable("id") Long id)
     {
@@ -106,17 +102,11 @@ public class BlogPostController
     }
     
     @RequestMapping(value = "{id}/comments", method = RequestMethod.GET)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Returns all comments refer to a specific post")
     public ResponseEntity getCommentsByPost(@PathVariable("id") Long id)
     {
-        if( !(blogPostService.getCommentsByPost(id).isEmpty()) )
-        {
-            return new ResponseEntity<>(blogPostService.getCommentsByPost(id), HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(blogPostService.getCommentsByPost(id), HttpStatus.OK);
     }
     
 }

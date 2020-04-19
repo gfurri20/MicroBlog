@@ -9,8 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
@@ -18,10 +18,10 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table( name = "users" )
-@Data
-@NoArgsConstructor
 public class BlogUser implements Serializable
 {
+    public BlogUser() {}
+    
     public BlogUser( String username, String email)
     {
         this.username = username;
@@ -32,12 +32,15 @@ public class BlogUser implements Serializable
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter @Setter
     private Long id;
 
     @Basic
+    @Getter @Setter
     private String username;
     
     @Basic
+    @Getter @Setter
     private String email;
     
 }

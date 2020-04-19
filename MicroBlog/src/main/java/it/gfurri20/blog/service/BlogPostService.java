@@ -5,6 +5,7 @@ import it.gfurri20.blog.domain.BlogComment;
 import it.gfurri20.blog.domain.BlogPost;
 import it.gfurri20.blog.repository.IBlogCommentRepository;
 import it.gfurri20.blog.repository.IBlogPostRepository;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import org.springframework.stereotype.Service;
 public class BlogPostService implements IBlogPostService
 {
     @Autowired
+    IBlogUserService blogUserService;
+    
+    @Autowired
     IBlogPostRepository blogPostRepository;
     
     @Autowired
@@ -27,6 +31,7 @@ public class BlogPostService implements IBlogPostService
     @Override
     public void createPost( BlogPost post )
     {
+        post.setPubblicationDate(new Date());
         blogPostRepository.save(post);
     }
     
