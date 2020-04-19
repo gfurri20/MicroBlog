@@ -59,10 +59,10 @@ public class BlogPostController
     @RequestMapping(method = RequestMethod.POST)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Creates a new post")
-    public ResponseEntity createPostByUsername(@RequestBody BlogPost post)
+    public ResponseEntity createPost(@RequestBody BlogPost post)
     {
         blogPostService.createPost(post);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(post.getId(), HttpStatus.CREATED);
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)

@@ -17,32 +17,11 @@ var APP =
                 url: "http://localhost:8081/posts",
                 method: "GET",
                 success: function(data, status) {
+                    
                     $.each(data, function(index, post) {
-                        //clone template which will containes infos
-                        var post_template = $("#templates").find(".post_container_template").clone();
-                        
-                        //populate the template
-                        post_template.find(".post_title").append(post["title"]);
-                        post_template.find(".post_content").append(post["content"]);
-                        post_template.find(".post_author").append(post["author"]["username"]);
-                        post_template.find(".post_date").append(post["pubblicationDate"]);
-                        
-                        //add to the template an id in order to identify each posts
-                        post_template.attr("id", "post" + post["id"]);
-                        //append the populated template to the posts container
-                        $("#posts_container").append(post_template);
-                        
-                        //create and append comment form
-                        var comment_form_template = $("#templates").find(".submit_comment_form_template").clone();
-                        comment_form_template.find(".btn_input_comment_submit").attr("id", post["id"]);
-                        comment_form_template.find(".input_comment_content").attr("id", "content" + post["id"]);
-                        post_template.append(comment_form_template);
-                        
-                        //callback for submit comment
-                        $("#" + post["id"]).on("click", APP.submitcomment);
-                        
-                        APP.showCommentsByPost(post['id']);
+                        APP.populate_post_template(post);
                     });
+                    
                 }
             } 
         );
@@ -58,26 +37,39 @@ var APP =
                 method: "GET",
                 success: function(data, status) {
                     if(data.length !== 0)
-                    {
-                        //if there are comments create the container which will contain all of them
-                        var comments_template = $("#templates").find(".comments_container_template").clone();
-                        $("#post" + post_id).append(comments_template);
-                        
+                    {                       
                         $.each(data, function(index, comment)
                         {
-                            //clone template which will containes infos
-                            var comment_template = $("#templates").find(".comment_container_template").clone();
-
-                            //populate the template
-                            comment_template.find(".comment_content").append(comment["content"]);
-                            comment_template.find(".comment_author").append(comment["author"]["username"]);
-
-                            //add to the template an id in order to identify each comments
-                            comment_template.attr("id", "comment" + comment["id"]);
-                            //append the populated template to the comments container
-                            $("#post" + post_id).find(".comments_container_template").append(comment_template);                        
+                            APP.populate_comment_template(comment);
                         });
                     }
+                }
+            }
+        );
+    },
+    
+    showPost : function(post_id) {
+        $.ajax(
+            {
+                url: "http://localhost:8081/posts/" + post_id,
+                method: "GET",
+                success: function(post, status) {
+                    APP.populate_post_template(post);
+                }
+            }
+        );
+    },
+    
+    showComment : function(comment_id) {
+        
+        var url = "http://localhost:8081/comments/" + comment_id;
+        
+        $.ajax(
+            {
+                url: url,
+                method: "GET",
+                success: function(comment, status) {
+                    APP.populate_comment_template(comment);
                 }
             }
         );
@@ -103,10 +95,13 @@ var APP =
                         }
                     }
                 ),
+                success: function(created_post_id) {
+                    alert("Post succesfully created!");
+                    APP.showPost(created_post_id);
+                },
                 statusCode: {
                     201: function() {
-                        alert("Post successfully created");
-                        window.location.reload();
+                        //todo something
                     }
                 }
             }
@@ -135,16 +130,64 @@ var APP =
                         }
                     }
                 ),
+                success: function(created_comment_id) {
+                    APP.showComment(created_comment_id);
+                },
                 statusCode: {
                     201: function() {
-                        alert("Comment successfully created");
-                        window.location.reload();
+                        //todo
                     }
                 }
             }    
         );
+    },
+    
+    populate_post_template : function(post) {
+        //clone template which will containes infos
+        var post_template = $("#templates").find(".post_container_template").clone();
 
+        //populate the template
+        post_template.find(".post_title").append(post["title"]);
+        post_template.find(".post_content").append(post["content"]);
+        post_template.find(".post_author").append(post["author"]["username"]);
+        post_template.find(".post_date").append(post["pubblicationDate"]);
+
+        //add to the template an id in order to identify each posts
+        post_template.attr("id", "post" + post["id"]);
+        //append the populated template to the posts container
+        $("#posts_container").append(post_template);
+
+        //create and append comment form
+        var comment_form_template = $("#templates").find(".submit_comment_form_template").clone();
+        comment_form_template.find(".btn_input_comment_submit").attr("id", post["id"]);
+        comment_form_template.find(".input_comment_content").attr("id", "content" + post["id"]);
+        post_template.append(comment_form_template);
         
+        //comments container
+        var comments_template = $("#templates").find(".comments_container_template").clone();
+        post_template.append(comments_template);
+
+        //callback for submit comment
+        $("#" + post["id"]).on("click", APP.submitcomment);
+
+        APP.showCommentsByPost(post['id']);
+    },
+    
+    populate_comment_template : function(comment) {
+        //id of the correlated post
+        var post_id = comment["correlatedPost"]["id"];      
+        
+        //clone template which will containes infos
+        var comment_template = $("#templates").find(".comment_container_template").clone();
+
+        //populate the template
+        comment_template.find(".comment_content").append(comment["content"]);
+        comment_template.find(".comment_author").append(comment["author"]["username"]);
+
+        //add to the template an id in order to identify each comments
+        comment_template.attr("id", "comment" + comment["id"]);
+        //append the populated template to the comments container
+        $("#post" + post_id).find(".comments_container_template").append(comment_template);
     }
 };
 

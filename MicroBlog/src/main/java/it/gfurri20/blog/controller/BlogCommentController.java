@@ -65,7 +65,7 @@ public class BlogCommentController
         else
         {
             blogCommentService.createComment(comment);
-            return new ResponseEntity(HttpStatus.CREATED);
+            return new ResponseEntity(comment.getId() ,HttpStatus.CREATED);
         }
     }
     
