@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiOperation;
 import it.gfurri20.blog.domain.BlogPost;
 import it.gfurri20.blog.service.IBlogPostService;
 import it.gfurri20.blog.service.IBlogUserService;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,12 +59,18 @@ public class BlogPostController
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @CrossOrigin(origins = "*", exposedHeaders = "Location", allowedHeaders = "*")
     @ApiOperation(value = "Creates a new post")
-    public ResponseEntity createPost(@RequestBody BlogPost post)
+    public ResponseEntity createPost(@RequestBody BlogPost post) throws URISyntaxException
     {
-        blogPostService.createPost(post);
-        return new ResponseEntity(post.getId(), HttpStatus.CREATED);
+        if( post == null )
+        {
+            return ResponseEntity.badRequest().build();
+        } else
+        {
+            blogPostService.createPost(post);
+            return ResponseEntity.created(new URI("http://localhost:8081/posts/" + post.getId())).build();
+        }
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)

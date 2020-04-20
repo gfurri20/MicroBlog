@@ -5,6 +5,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import it.gfurri20.blog.domain.BlogComment;
 import it.gfurri20.blog.service.IBlogCommentService;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,18 +56,18 @@ public class BlogCommentController
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @CrossOrigin(origins = "*", exposedHeaders = "Location", allowedHeaders = "*")
     @ApiOperation(value = "Creates a new comment")
-    public ResponseEntity createComment(@RequestBody BlogComment comment)
+    public ResponseEntity createComment(@RequestBody BlogComment comment) throws URISyntaxException
     {
         if( comment == null )
         {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
         else
         {
             blogCommentService.createComment(comment);
-            return new ResponseEntity(comment.getId() ,HttpStatus.CREATED);
+            return ResponseEntity.created(new URI("http://localhost:8081/comments/" + comment.getId())).build();
         }
     }
     

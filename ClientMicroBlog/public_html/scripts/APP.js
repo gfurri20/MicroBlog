@@ -48,10 +48,10 @@ var APP =
         );
     },
     
-    showPost : function(post_id) {
+    showPost : function(address) {
         $.ajax(
             {
-                url: "http://localhost:8081/posts/" + post_id,
+                url: address,
                 method: "GET",
                 success: function(post, status) {
                     APP.populate_post_template(post);
@@ -60,13 +60,16 @@ var APP =
         );
     },
     
-    showComment : function(comment_id) {
-        
-        var url = "http://localhost:8081/comments/" + comment_id;
-        
+    /**
+     * Send a <code>HTTP GET Request</code> to get a specific comment by its id
+     * 
+     * @param {string} address
+     * @returns {void}
+     */
+    showComment : function(address) {       
         $.ajax(
             {
-                url: url,
+                url: address,
                 method: "GET",
                 success: function(comment, status) {
                     APP.populate_comment_template(comment);
@@ -95,9 +98,9 @@ var APP =
                         }
                     }
                 ),
-                success: function(created_post_id) {
-                    alert("Post succesfully created!");
-                    APP.showPost(created_post_id);
+                success: function(data , status, request) {
+                    var address = request.getResponseHeader("Location");
+                    APP.showPost(address);
                 },
                 statusCode: {
                     201: function() {
@@ -130,8 +133,9 @@ var APP =
                         }
                     }
                 ),
-                success: function(created_comment_id) {
-                    APP.showComment(created_comment_id);
+                success: function(data, status, request) {
+                    var address = request.getResponseHeader("Location");
+                    APP.showComment(address);
                 },
                 statusCode: {
                     201: function() {
