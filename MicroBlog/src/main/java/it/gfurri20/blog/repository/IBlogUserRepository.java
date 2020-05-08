@@ -14,7 +14,7 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author gfurri20
  */
-public interface BlogUserRepository extends CrudRepository<BlogUser, Long>
+public interface IBlogUserRepository extends CrudRepository<BlogUser, Long>
 {
     /**
      * Search an user by its username

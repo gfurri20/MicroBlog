@@ -2,11 +2,11 @@
 package it.gfurri20.blog.service;
 
 import it.gfurri20.blog.domain.BlogUser;
-import it.gfurri20.blog.repository.BlogUserRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import it.gfurri20.blog.repository.IBlogUserRepository;
 
 
 /**
@@ -18,7 +18,7 @@ public class BlogUserService implements IBlogUserService
 {
 
     @Autowired
-    BlogUserRepository blogUserRepository;
+    IBlogUserRepository blogUserRepository;
 
     @Override
     public void createUser( BlogUser user )
@@ -67,11 +67,7 @@ public class BlogUserService implements IBlogUserService
     @Override
     public void updateUser( Long id, BlogUser user )
     {
-        BlogUser oldUser = this.getUserById(id);
-        oldUser.setUsername(user.getUsername());
-        oldUser.setEmail(user.getEmail());
-
-        blogUserRepository.save(oldUser);
+        //TODO
     }
     
     

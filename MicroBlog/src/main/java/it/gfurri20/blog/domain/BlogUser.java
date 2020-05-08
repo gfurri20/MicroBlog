@@ -3,7 +3,11 @@
 package it.gfurri20.blog.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,10 +26,9 @@ public class BlogUser implements Serializable
 {
     public BlogUser() {}
     
-    public BlogUser( String username, String email)
+    public BlogUser( String username, String password, String roles, String permissions )
     {
         this.username = username;
-        this.email = email;
     }
     
     
@@ -37,10 +40,37 @@ public class BlogUser implements Serializable
 
     @Basic
     @Getter @Setter
+    @Column(nullable = false)
     private String username;
     
     @Basic
     @Getter @Setter
-    private String email;
+    @Column(nullable = false)
+    private String password;
     
+    @Basic
+    @Getter @Setter
+    private int active;
+    
+    @Basic
+    @Getter @Setter
+    private String roles = "";
+    
+    @Basic
+    @Getter @Setter
+    private String permissions = "";
+    
+    public List<String> getRolesList() {
+        if(this.roles.length() > 0)
+            return Arrays.asList(this.roles.split(","));
+        
+        return new ArrayList<>();
+    }
+    
+    public List<String> getPermissionsList() {
+        if(this.permissions.length() > 0)
+            return Arrays.asList(this.permissions.split(","));
+        
+        return new ArrayList<>();
+    }
 }
