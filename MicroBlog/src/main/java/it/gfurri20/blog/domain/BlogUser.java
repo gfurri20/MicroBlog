@@ -1,5 +1,4 @@
 
-
 package it.gfurri20.blog.domain;
 
 import java.io.Serializable;
@@ -29,6 +28,10 @@ public class BlogUser implements Serializable
     public BlogUser( String username, String password, String roles, String permissions )
     {
         this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.permissions = permissions;
+        this.active = 1;
     }
     
     

@@ -1,24 +1,7 @@
 
 /**
  * Author:  gfurri20
- * Created: 7 mar 2020
+ * Created: 8 mag 2020
  */
 
-insert into users (username, email) values
-    ('pippo', 'pippo@gmail.com');
-
-insert into users (username, email) values
-    ('topolino', 'topolino@gmail.com');
-
-
-insert into posts (title, content, pubblication_date, author_id) values
-    ('first title', 'first content', '2020-03-07', 1);
-
-insert into posts (title, content, pubblication_date, author_id) values
-    ('second title', 'second content', '2020-03-07', 1);
-
-insert into comments (content, pubblication_date, author_id, correlated_post_id) values
-    ('first comment', '2020-03-14', 1, 1);
-
-insert into comments (content, pubblication_date, author_id, correlated_post_id) values
-    ('second comment', '2020-03-10', 2, 1);
+--insert into posts(title, content, author_id) values ('Bug #19 JDBC', 'Ho trovato questo bug, qualcuno riesce a risolverlo?', 1);
