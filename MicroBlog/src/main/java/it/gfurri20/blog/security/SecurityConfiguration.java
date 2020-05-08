@@ -45,13 +45,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .headers().frameOptions().disable()
+                .and()
                 // add jwt filters (1. authentication, 2. authorization)
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository))
                 .authorizeRequests()
                 // configure access rules
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers("/h2").permitAll()
+                .antMatchers("/h2/**").permitAll()
                 .antMatchers("/posts").permitAll()
                 .antMatchers("/users").hasRole("ADMIN")
                 .anyRequest().authenticated();
