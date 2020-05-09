@@ -12,7 +12,7 @@ var APP =
         //gets all post from API
         $.ajax(
             {
-                url: "http://localhost:8081/posts",
+                url: APP.BASE_PATH + "posts",
                 method: "GET",
                 success: function(data, status) {
                     
@@ -27,7 +27,7 @@ var APP =
     
     showCommentsByPost : function(post_id)
     {
-        var url = "http://localhost:8081/posts/" + post_id + "/comments";
+        var url = APP.BASE_PATH + "posts/" + post_id + "/comments";
         //gets all comments by post
         $.ajax(
             {
@@ -117,7 +117,7 @@ var APP =
         
         $.ajax(
             {
-                url: "http://localhost:8081/comments",
+                url: APP.BASE_PATH + "comments",
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(

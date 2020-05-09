@@ -24,10 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = {"Comment"})
 @RestController
-@RequestMapping("comments")
+@RequestMapping("api/comments")
 public class BlogCommentController
-{
-    
+{   
     @Autowired
     IBlogCommentService blogCommentService;
     
@@ -63,7 +62,7 @@ public class BlogCommentController
         else
         {
             blogCommentService.createComment(comment);
-            return ResponseEntity.created(new URI("http://localhost:8081/comments/" + comment.getId())).build();
+            return ResponseEntity.created(new URI("http://localhost:8081/microblog/v2/api/comments/" + comment.getId())).build();
         }
     }
     

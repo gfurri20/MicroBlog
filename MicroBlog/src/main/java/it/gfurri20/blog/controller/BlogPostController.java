@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = {"Post"})
 @RestController
-@RequestMapping("posts")
+@RequestMapping("api/posts")
 public class BlogPostController
 {
     @Autowired
@@ -65,7 +65,7 @@ public class BlogPostController
         } else
         {
             blogPostService.createPost(post);
-            return ResponseEntity.created(new URI("http://localhost:8081/posts/" + post.getId())).build();
+            return ResponseEntity.created(new URI("http://localhost:8081/microblog/v2/api/posts/" + post.getId())).build();
         }
     }
     

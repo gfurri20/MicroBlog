@@ -57,9 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .cors().and()
                 .authorizeRequests()
                 // configure access rules
-                .antMatchers(HttpMethod.POST, "/posts").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/comments").hasAnyRole("USER", "ADMIN")
-                ;
+                .antMatchers(HttpMethod.POST, "/api/posts").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/comments").hasAnyRole("USER", "ADMIN");
     }
 
     @Bean
