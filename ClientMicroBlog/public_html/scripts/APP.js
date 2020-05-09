@@ -18,6 +18,12 @@ var APP =
             {
                 url: APP.BASE_PATH + "posts",
                 method: "GET",
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(data, status) {
                     
                     $.each(data, function(index, post) {
@@ -37,6 +43,12 @@ var APP =
             {
                 url: url,
                 method: "GET",
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(data, status) {
                     if(data.length !== 0)
                     {                       
@@ -55,6 +67,12 @@ var APP =
             {
                 url: address,
                 method: "GET",
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(post, status) {
                     APP.populate_post_template(post);
                 }
@@ -73,6 +91,12 @@ var APP =
             {
                 url: address,
                 method: "GET",
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(comment, status) {
                     APP.populate_comment_template(comment);
                 }
@@ -111,8 +135,8 @@ var APP =
                     APP.showPost(address);
                 },
                 statusCode: {
-                    201: function() {
-                        //todo something
+                    403: function() {
+                        alert("You have to be an ADMIN to post something");
                     }
                 }
             }
@@ -121,7 +145,7 @@ var APP =
     
     submitcomment : function(event)
     {
-        //gets variables from form
+        //gets variables from the form
         post_id = event.target.id;
         var comment_content = $("#content" + post_id).val();
         
@@ -141,13 +165,19 @@ var APP =
                         }
                     }
                 ),
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(data, status, request) {
                     var address = request.getResponseHeader("Location");
                     APP.showComment(address);
                 },
                 statusCode: {
-                    201: function() {
-                        //todo
+                    403: function() {
+                        alert("You have to be logged in to comment");
                     }
                 }
             }    
@@ -185,8 +215,13 @@ var APP =
     
     doLogout : function()
     {
+        //deletes the variables correlated to an user
         sessionStorage.removeItem("JWT_TOKEN");
         sessionStorage.removeItem("CURRENT_USERNAME");
+        //updates the status banner
+        $("#log_status_banner").html("Not Logged");
+        $("#log_status_banner").css("color", "red");
+        //alert the browser
         alert("Logout successfully!");
     },
     

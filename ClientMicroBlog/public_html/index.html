@@ -12,7 +12,7 @@
     <body>
         <div id="main_posts_container">
             
-            <h1>Micro blog</h1> <button id="btn_logout">Logout</button>
+            <h1>Micro blog</h1> <a href="login.html">Login</a> <button id="btn_logout">Logout</button> <span id="log_status_banner" style="color: red">Not Logged</span>
             
             <div id="posts_container" style="border: 4px black solid">
                 
@@ -68,6 +68,13 @@
                 APP.showPosts();
                 $("#btn_input_post_submit").on("click", APP.submitpost);
                 $("#btn_logout").on("click", APP.doLogout);
+                
+                //check if someone is logged in
+                if(sessionStorage.getItem("JWT_TOKEN") !== null)
+                {
+                    $("#log_status_banner").html("Logged In as: " + sessionStorage.getItem("CURRENT_USERNAME"));
+                    $("#log_status_banner").css("color", "green");
+                }
             });
         </script>
     </body>        
