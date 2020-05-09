@@ -15,6 +15,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 /**
@@ -47,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .and()
                 .headers().frameOptions().disable()
                 .and()
+                .cors().and()
                 // add jwt filters (1. authentication, 2. authorization)
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository))
@@ -69,5 +72,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     PasswordEncoder passwordEncoder()
     {
         return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+    public WebMvcConfigurer corsConfigurer()
+    {
+        return new WebMvcConfigurer()
+        {
+            @Override
+            public void addCorsMappings( CorsRegistry registry )
+            {
+                registry.addMapping("/**").allowedOrigins("*").exposedHeaders("Location", "Authorization").allowedHeaders("*");
+            }
+        };
     }
 }

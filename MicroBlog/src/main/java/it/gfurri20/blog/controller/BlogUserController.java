@@ -13,7 +13,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,6 @@ public class BlogUserController
     IBlogUserService blogUserService;
     
     @RequestMapping(method = RequestMethod.GET)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Returns all saved users")
     public ResponseEntity<List<BlogUser>> getUsers()
     {
@@ -49,7 +47,6 @@ public class BlogUserController
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Returns a user by its id")
     public ResponseEntity<BlogUser> getUserById(@PathVariable Long id)
     {
@@ -64,7 +61,6 @@ public class BlogUserController
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Creates a new user")
     public ResponseEntity createUser(@RequestBody BlogUser user)
     {
@@ -84,7 +80,6 @@ public class BlogUserController
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Updates an user")
     public ResponseEntity updateUser(@PathVariable Long id, @RequestBody BlogUser user)
     {
@@ -104,7 +99,6 @@ public class BlogUserController
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ApiOperation(value = "Deletes an user")
     public ResponseEntity deleteUser(@PathVariable Long id)
     {

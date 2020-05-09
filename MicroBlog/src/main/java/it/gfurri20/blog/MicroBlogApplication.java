@@ -15,5 +15,4 @@ public class MicroBlogApplication
         System.setProperty("server.servlet.context-path", "/microblog/v2/api");
         SpringApplication.run(MicroBlogApplication.class, args);
     }
-
 }

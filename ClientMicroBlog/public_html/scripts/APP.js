@@ -5,9 +5,7 @@
  */
 var APP =
 {
-    //mockup user
-    POST_AUTHOR_ID : 1,
-    COMMENT_AUTHOR_ID: 2,
+    BASE_PATH: "http://localhost:8081/microblog/v2/api/",
     
     showPosts : function()
     {
@@ -86,7 +84,7 @@ var APP =
         
         $.ajax(
             {
-                url: "http://localhost:8081/posts",
+                url: APP.BASE_PATH + "posts",
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(
@@ -94,7 +92,7 @@ var APP =
                         title: title,
                         content: content,
                         author: {
-                            id: APP.POST_AUTHOR_ID
+                            id: 1
                         }
                     }
                 ),
