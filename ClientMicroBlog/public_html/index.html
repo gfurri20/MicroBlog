@@ -7,14 +7,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="scripts/LOGIN.js"></script>
         <script src="scripts/APP.js"></script>
-        <script src="scripts/USER.js"></script>
     </head>
     <body>
         <div id="main_posts_container">
             
-            <h1>Micro blog</h1>
+            <h1>Micro blog</h1>  <button id="btn_swago_debugo">Swago Debugo</button>
             
             <div id="posts_container" style="border: 4px black solid">
                 
@@ -69,6 +67,9 @@
             $(document).ready(function() {
                 APP.showPosts();
                 $("#btn_input_post_submit").on("click", APP.submitpost);
+                $("#btn_swago_debugo").on("click", function() {
+                    alert(localStorage.getItem("JWT_TOKEN") + "---" + localStorage.getItem("CURRENT_USERNAME"));
+                });
             });
         </script>
     </body>        

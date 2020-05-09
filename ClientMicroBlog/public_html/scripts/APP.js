@@ -3,9 +3,13 @@
 /*
  * @author gfurri20
  */
+
 var APP =
 {
     BASE_PATH: "http://localhost:8081/microblog/v2/api/",
+    
+    HEADER_STRING: "Authorization",
+    TOKEN_PREFIX: "Bearer ",
     
     showPosts : function()
     {
@@ -92,7 +96,7 @@ var APP =
                         title: title,
                         content: content,
                         author: {
-                            id: 1
+                            username: localStorage.getItem("CURRENT_USERNAME")
                         }
                     }
                 ),
@@ -127,7 +131,7 @@ var APP =
                             id: post_id
                         },
                         author: {
-                            id: APP.COMMENT_AUTHOR_ID
+                            username: localStorage.getItem("CURRENT_USERNAME")
                         }
                     }
                 ),
@@ -141,6 +145,35 @@ var APP =
                     }
                 }
             }    
+        );
+    },
+    
+    /**
+     * Takes in input username and password and do the auth to the server, if it works store the jwt token
+     * 
+     * @returns void
+     */
+    doLogin : function()
+    {
+        var input_username = $("#login_username").val();
+        var input_pwd = $("#login_password").val();
+        
+        $.ajax(
+            {
+                url: "http://localhost:8081/microblog/v2/login",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(
+                        {
+                            username: input_username,
+                            password: input_pwd
+                        }),
+                success: function(data, status, request) {
+                   localStorage.setItem("JWT_TOKEN", request.getResponseHeader('Authorization').split(" ").pop());
+                   localStorage.setItem("CURRENT_USERNAME", input_username);
+                   window.location.assign("index.html");
+                }
+            } 
         );
     },
     
