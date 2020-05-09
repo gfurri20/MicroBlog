@@ -7,6 +7,7 @@ import it.gfurri20.blog.security.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
-{
+{   
     @Autowired
     private UserPrincipalDetailsService userPrincipalDetailsService;
     
@@ -43,19 +44,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         http
-                // remove csrf and state in session because in jwt we do not need them
+                // remove csrf and setting stateless policy
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .headers().frameOptions().disable()
                 .and()
-                .cors().and()
-                // add jwt filters (1. authentication, 2. authorization)
+                //jwt filters 
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository))
+                //setting cors policy
+                .cors().and()
                 .authorizeRequests()
                 // configure access rules
-                .anyRequest().permitAll();
+                .antMatchers(HttpMethod.POST, "/posts").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/comments").hasAnyRole("USER", "ADMIN")
+                ;
     }
 
     @Bean
