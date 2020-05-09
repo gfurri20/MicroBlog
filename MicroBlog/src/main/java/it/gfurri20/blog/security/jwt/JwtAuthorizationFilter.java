@@ -3,6 +3,7 @@ package it.gfurri20.blog.security.jwt;
 
 import com.auth0.jwt.JWT;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import it.gfurri20.blog.domain.BlogUser;
 import it.gfurri20.blog.repository.IBlogUserRepository;
 import it.gfurri20.blog.security.UserPrincipal;
@@ -45,14 +46,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter
         // If header is present, try grab user principal from database and perform authorization
         Authentication authentication = getUsernamePasswordAuthentication(request);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
+ 
         // Continue filter execution
         chain.doFilter(request, response);
     }
 
-    private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
+    private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) throws TokenExpiredException {
         String token = request.getHeader(JwtProperties.HEADER_STRING)
-                .replace(JwtProperties.TOKEN_PREFIX,"");
+                .replace(JwtProperties.TOKEN_PREFIX, "");
 
         if (token != null) {
             // parse the token and validate it

@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 public class BlogCommentService implements IBlogCommentService
 {
     @Autowired
+    IBlogUserService blogUserService;
+    
+    @Autowired
     IBlogCommentRepository blogCommentRepository;
     
     @Autowired
@@ -27,6 +30,7 @@ public class BlogCommentService implements IBlogCommentService
     public void createComment( BlogComment comment )
     {
         comment.setPubblicationDate(new Date());
+        comment.setAuthor(blogUserService.getUserByUsername(comment.getAuthor().getUsername()));
         blogCommentRepository.save(comment);
     }
     

@@ -32,6 +32,7 @@ public class BlogPostService implements IBlogPostService
     public void createPost( BlogPost post )
     {
         post.setPubblicationDate(new Date());
+        post.setAuthor(blogUserService.getUserByUsername(post.getAuthor().getUsername()));
         blogPostRepository.save(post);
     }
     
