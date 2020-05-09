@@ -12,7 +12,7 @@
     <body>
         <div id="main_posts_container">
             
-            <h1>Micro blog</h1>  <button id="btn_swago_debugo">Swago Debugo</button>
+            <h1>Micro blog</h1> <button id="btn_logout">Logout</button>
             
             <div id="posts_container" style="border: 4px black solid">
                 
@@ -67,9 +67,7 @@
             $(document).ready(function() {
                 APP.showPosts();
                 $("#btn_input_post_submit").on("click", APP.submitpost);
-                $("#btn_swago_debugo").on("click", function() {
-                    alert(localStorage.getItem("JWT_TOKEN") + "---" + localStorage.getItem("CURRENT_USERNAME"));
-                });
+                $("#btn_logout").on("click", APP.doLogout);
             });
         </script>
     </body>        

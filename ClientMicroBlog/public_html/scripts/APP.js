@@ -96,10 +96,16 @@ var APP =
                         title: title,
                         content: content,
                         author: {
-                            username: localStorage.getItem("CURRENT_USERNAME")
+                            username: sessionStorage.getItem("CURRENT_USERNAME")
                         }
                     }
                 ),
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(data , status, request) {
                     var address = request.getResponseHeader("Location");
                     APP.showPost(address);
@@ -131,7 +137,7 @@ var APP =
                             id: post_id
                         },
                         author: {
-                            username: localStorage.getItem("CURRENT_USERNAME")
+                            username: sessionStorage.getItem("CURRENT_USERNAME")
                         }
                     }
                 ),
@@ -169,12 +175,19 @@ var APP =
                             password: input_pwd
                         }),
                 success: function(data, status, request) {
-                   localStorage.setItem("JWT_TOKEN", request.getResponseHeader('Authorization').split(" ").pop());
-                   localStorage.setItem("CURRENT_USERNAME", input_username);
+                   sessionStorage.setItem("JWT_TOKEN", request.getResponseHeader('Authorization').split(" ").pop());
+                   sessionStorage.setItem("CURRENT_USERNAME", input_username);
                    window.location.assign("index.html");
                 }
             } 
         );
+    },
+    
+    doLogout : function()
+    {
+        sessionStorage.removeItem("JWT_TOKEN");
+        sessionStorage.removeItem("CURRENT_USERNAME");
+        alert("Logout successfully!");
     },
     
     populate_post_template : function(post) {
