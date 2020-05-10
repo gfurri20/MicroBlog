@@ -6,10 +6,13 @@
 package it.gfurri20.blog.controller.auth;
 
 import io.swagger.annotations.Api;
+import it.gfurri20.blog.domain.BlogUser;
 import it.gfurri20.blog.domain.auth.LoginViewModel;
 import it.gfurri20.blog.domain.auth.RegistrationModelView;
-import it.gfurri20.blog.service.auth.IAuthenticationService;
 import it.gfurri20.blog.service.IBlogUserService;
+import it.gfurri20.blog.service.auth.IAuthenticationService;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,14 +73,39 @@ public class AuthenticationController
         }
         catch( BadCredentialsException e )
         {
-            //if pwd or username is wrong return an unauthorized http status
+            //if pwd or username are wrong return an unauthorized http status
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
     
     @PostMapping("/registration")
-    public ResponseEntity registration(HttpServletRequest request, HttpServletResponse response, @RequestBody RegistrationModelView credentials)
+    public ResponseEntity registration(HttpServletRequest request, HttpServletResponse response, @RequestBody RegistrationModelView registrationCredentials) throws URISyntaxException
     {
-        return null;
+        //try to create the user
+        BlogUser user = userService.registerBasicUser(registrationCredentials);
+        //if different from null the user has been saved
+        if(user != null)
+        {
+            //create login info
+            LoginViewModel loginCredentials = new LoginViewModel();
+                loginCredentials.setUsername(registrationCredentials.getUsername());
+                loginCredentials.setPassword(registrationCredentials.getPassword());
+            //proceed to the authentication
+            if(authenticationService.successfulRegistration(request, response, loginCredentials))
+            {
+                //if authentication is successful
+                return ResponseEntity.created(new URI("http://localhost:8081/microblog/v2/api/users/" + user.getId())).build();
+            }
+            else
+            {
+            //if the authentication fail
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        }
+        else
+        {
+            //if the registraion fail
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

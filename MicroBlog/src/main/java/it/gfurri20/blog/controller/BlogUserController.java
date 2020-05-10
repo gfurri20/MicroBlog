@@ -60,25 +60,6 @@ public class BlogUserController
         }
     }
     
-    @RequestMapping(method = RequestMethod.POST)
-    @ApiOperation(value = "Creates a new user")
-    public ResponseEntity createUser(@RequestBody BlogUser user)
-    {
-        if( user == null )
-        {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        else if( blogUserService.getUserByUsername(user.getUsername()) == null )
-        {
-            blogUserService.createUser(user);
-            return new ResponseEntity(HttpStatus.CREATED);
-        }
-        else
-        {
-            return new ResponseEntity(HttpStatus.CONFLICT);
-        }
-    }
-    
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @ApiOperation(value = "Updates an user")
     public ResponseEntity updateUser(@PathVariable Long id, @RequestBody BlogUser user)
