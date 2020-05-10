@@ -213,6 +213,37 @@ var APP =
         );
     },
     
+    /**
+     * Takes in input username and password and do the auth to the server, if it works store the jwt token
+     * 
+     * @returns void
+     */
+    doRegistration : function()
+    {
+        var input_username = $("#registration_username").val();
+        var input_pwd = $("#registration_password").val();
+        var input_repeat_pwd = $("#registration_repeat_password").val();
+        
+        $.ajax(
+            {
+                url: "http://localhost:8081/microblog/v2/registration",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(
+                        {
+                            username: input_username,
+                            password: input_pwd,
+                            repeatPassword: input_repeat_pwd
+                        }),
+                success: function(data, status, request) {
+                   sessionStorage.setItem("JWT_TOKEN", request.getResponseHeader('Authorization').split(" ").pop());
+                   sessionStorage.setItem("CURRENT_USERNAME", input_username);
+                   window.location.assign("index.html");
+                }
+            } 
+        );
+    },
+    
     doLogout : function()
     {
         //deletes the variables correlated to an user

@@ -81,7 +81,7 @@ public class AuthenticationController
     @PostMapping("/registration")
     public ResponseEntity registration(HttpServletRequest request, HttpServletResponse response, @RequestBody RegistrationModelView registrationCredentials) throws URISyntaxException
     {
-        //try to create the user
+        //try creating the user
         BlogUser user = userService.registerBasicUser(registrationCredentials);
         //if different from null the user has been saved
         if(user != null)
