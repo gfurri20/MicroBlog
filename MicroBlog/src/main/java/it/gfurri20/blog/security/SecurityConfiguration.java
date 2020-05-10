@@ -1,13 +1,12 @@
-
 package it.gfurri20.blog.security;
 
 import it.gfurri20.blog.repository.IBlogUserRepository;
-import it.gfurri20.blog.security.jwt.JwtAuthenticationFilter;
 import it.gfurri20.blog.security.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,21 +26,22 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
-{   
+{
+
     @Autowired
     private UserPrincipalDetailsService userPrincipalDetailsService;
-    
+
     @Autowired
     private IBlogUserRepository userRepository;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth)
+    protected void configure( AuthenticationManagerBuilder auth )
     {
         auth.authenticationProvider(authenticationProvider());
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception
+    protected void configure( HttpSecurity http ) throws Exception
     {
         http
                 // remove csrf and setting stateless policy
@@ -51,7 +51,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .headers().frameOptions().disable()
                 .and()
                 //jwt filters 
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository))
                 //setting cors policy
                 .cors().and()
@@ -72,11 +71,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     }
 
     @Bean
-    PasswordEncoder passwordEncoder()
+    public PasswordEncoder passwordEncoder()
     {
         return new BCryptPasswordEncoder();
     }
-    
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception
+    {
+        return super.authenticationManagerBean();
+    }
+
     @Bean
     public WebMvcConfigurer corsConfigurer()
     {
