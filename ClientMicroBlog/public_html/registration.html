@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Registration</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="scripts/APP.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm"></div>
+                
+                <div class="col-sm">
+
+                        <div class="form-group">
+                            <label for="registration_username">Username</label>
+                            <input type="text" class="form-control" id="registration_username">
+                        </div>
+                        <div class="form-group">
+                            <label for="registration_password">Password</label>
+                            <input type="password" class="form-control" id="registration_password">
+                        </div>
+                        <div class="form-group">
+                            <label for="registration_repeat_password">Repeat Password</label>
+                            <input type="password" class="form-control" id="registration_repeat_password">
+                        </div>
+
+                        <button id="btn_registration">Submit</button>
+
+                </div>
+                
+                <div class="col-sm"></div>
+            </div>
+        </div>
+        
+        <script>
+            $(document).ready(function() {
+                $("#btn_registration").on("click", APP.doRegistration);
+            });
+        </script>
+    </body>
+</html>

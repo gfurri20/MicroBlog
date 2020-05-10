@@ -3,19 +3,27 @@
 /*
  * @author gfurri20
  */
+
 var APP =
 {
-    //mockup user
-    POST_AUTHOR_ID : 1,
-    COMMENT_AUTHOR_ID: 2,
+    BASE_PATH: "http://localhost:8081/microblog/v2/api/",
+    
+    HEADER_STRING: "Authorization",
+    TOKEN_PREFIX: "Bearer ",
     
     showPosts : function()
     {
         //gets all post from API
         $.ajax(
             {
-                url: "http://localhost:8081/posts",
+                url: APP.BASE_PATH + "posts",
                 method: "GET",
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(data, status) {
                     
                     $.each(data, function(index, post) {
@@ -29,12 +37,18 @@ var APP =
     
     showCommentsByPost : function(post_id)
     {
-        var url = "http://localhost:8081/posts/" + post_id + "/comments";
+        var url = APP.BASE_PATH + "posts/" + post_id + "/comments";
         //gets all comments by post
         $.ajax(
             {
                 url: url,
                 method: "GET",
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(data, status) {
                     if(data.length !== 0)
                     {                       
@@ -53,6 +67,12 @@ var APP =
             {
                 url: address,
                 method: "GET",
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(post, status) {
                     APP.populate_post_template(post);
                 }
@@ -71,6 +91,12 @@ var APP =
             {
                 url: address,
                 method: "GET",
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(comment, status) {
                     APP.populate_comment_template(comment);
                 }
@@ -86,7 +112,7 @@ var APP =
         
         $.ajax(
             {
-                url: "http://localhost:8081/posts",
+                url: APP.BASE_PATH + "posts",
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(
@@ -94,17 +120,23 @@ var APP =
                         title: title,
                         content: content,
                         author: {
-                            id: APP.POST_AUTHOR_ID
+                            username: sessionStorage.getItem("CURRENT_USERNAME")
                         }
                     }
                 ),
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(data , status, request) {
                     var address = request.getResponseHeader("Location");
                     APP.showPost(address);
                 },
                 statusCode: {
-                    201: function() {
-                        //todo something
+                    403: function() {
+                        alert("You have to be an ADMIN to post something");
                     }
                 }
             }
@@ -113,13 +145,13 @@ var APP =
     
     submitcomment : function(event)
     {
-        //gets variables from form
+        //gets variables from the form
         post_id = event.target.id;
         var comment_content = $("#content" + post_id).val();
         
         $.ajax(
             {
-                url: "http://localhost:8081/comments",
+                url: APP.BASE_PATH + "comments",
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(
@@ -129,21 +161,99 @@ var APP =
                             id: post_id
                         },
                         author: {
-                            id: APP.COMMENT_AUTHOR_ID
+                            username: sessionStorage.getItem("CURRENT_USERNAME")
                         }
                     }
                 ),
+                beforeSend: function(xhr){
+                    if( sessionStorage.getItem("JWT_TOKEN") !== null )
+                    {
+                        xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
+                    }                    
+                },
                 success: function(data, status, request) {
                     var address = request.getResponseHeader("Location");
                     APP.showComment(address);
                 },
                 statusCode: {
-                    201: function() {
-                        //todo
+                    403: function() {
+                        alert("You have to be logged in to comment");
                     }
                 }
             }    
         );
+    },
+    
+    /**
+     * Takes in input username and password and do the auth to the server, if it works store the jwt token
+     * 
+     * @returns void
+     */
+    doLogin : function()
+    {
+        var input_username = $("#login_username").val();
+        var input_pwd = $("#login_password").val();
+        
+        $.ajax(
+            {
+                url: "http://localhost:8081/microblog/v2/login",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(
+                        {
+                            username: input_username,
+                            password: input_pwd
+                        }),
+                success: function(data, status, request) {
+                   sessionStorage.setItem("JWT_TOKEN", request.getResponseHeader('Authorization').split(" ").pop());
+                   sessionStorage.setItem("CURRENT_USERNAME", input_username);
+                   window.location.assign("index.html");
+                }
+            } 
+        );
+    },
+    
+    /**
+     * Takes in input username and password and do the auth to the server, if it works store the jwt token
+     * 
+     * @returns void
+     */
+    doRegistration : function()
+    {
+        var input_username = $("#registration_username").val();
+        var input_pwd = $("#registration_password").val();
+        var input_repeat_pwd = $("#registration_repeat_password").val();
+        
+        $.ajax(
+            {
+                url: "http://localhost:8081/microblog/v2/registration",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(
+                        {
+                            username: input_username,
+                            password: input_pwd,
+                            repeatPassword: input_repeat_pwd
+                        }),
+                success: function(data, status, request) {
+                   sessionStorage.setItem("JWT_TOKEN", request.getResponseHeader('Authorization').split(" ").pop());
+                   sessionStorage.setItem("CURRENT_USERNAME", input_username);
+                   window.location.assign("index.html");
+                }
+            } 
+        );
+    },
+    
+    doLogout : function()
+    {
+        //deletes the variables correlated to an user
+        sessionStorage.removeItem("JWT_TOKEN");
+        sessionStorage.removeItem("CURRENT_USERNAME");
+        //updates the status banner
+        $("#log_status_banner").html("Not Logged");
+        $("#log_status_banner").css("color", "red");
+        //alert the browser
+        alert("Logout successfully!");
     },
     
     populate_post_template : function(post) {

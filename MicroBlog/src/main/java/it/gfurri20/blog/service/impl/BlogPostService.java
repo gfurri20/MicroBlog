@@ -1,10 +1,12 @@
 
-package it.gfurri20.blog.service;
+package it.gfurri20.blog.service.impl;
 
 import it.gfurri20.blog.domain.BlogComment;
 import it.gfurri20.blog.domain.BlogPost;
 import it.gfurri20.blog.repository.IBlogCommentRepository;
 import it.gfurri20.blog.repository.IBlogPostRepository;
+import it.gfurri20.blog.service.IBlogPostService;
+import it.gfurri20.blog.service.IBlogUserService;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,6 +34,7 @@ public class BlogPostService implements IBlogPostService
     public void createPost( BlogPost post )
     {
         post.setPubblicationDate(new Date());
+        post.setAuthor(blogUserService.getUserByUsername(post.getAuthor().getUsername()));
         blogPostRepository.save(post);
     }
     

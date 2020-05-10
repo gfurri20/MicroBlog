@@ -1,8 +1,11 @@
 
-package it.gfurri20.blog.service;
+package it.gfurri20.blog.service.impl;
 
 import it.gfurri20.blog.domain.BlogComment;
 import it.gfurri20.blog.repository.IBlogCommentRepository;
+import it.gfurri20.blog.service.IBlogCommentService;
+import it.gfurri20.blog.service.IBlogPostService;
+import it.gfurri20.blog.service.IBlogUserService;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -18,6 +21,9 @@ import org.springframework.stereotype.Service;
 public class BlogCommentService implements IBlogCommentService
 {
     @Autowired
+    IBlogUserService blogUserService;
+    
+    @Autowired
     IBlogCommentRepository blogCommentRepository;
     
     @Autowired
@@ -27,6 +33,7 @@ public class BlogCommentService implements IBlogCommentService
     public void createComment( BlogComment comment )
     {
         comment.setPubblicationDate(new Date());
+        comment.setAuthor(blogUserService.getUserByUsername(comment.getAuthor().getUsername()));
         blogCommentRepository.save(comment);
     }
     
