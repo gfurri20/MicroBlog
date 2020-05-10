@@ -46,11 +46,11 @@ public class DbInit implements CommandLineRunner
         List<BlogUser> users = Arrays.asList(pippo,admin);
         
         //Create posts
-        BlogPost post1 = new BlogPost("Processore come fornello", "Secondo voi è possibile usare il processore come fornello?", new Date(), admin);
+        BlogPost post1 = new BlogPost("Lorem ipsum", "Lorem ipsum dolor sit amet exercitation laborum nisi culpa adipisicing et elit. Reprehenderit tempor dolor amet ut sit occaecat quis dolor excepteur quis deserunt exercitation excepteur amet. Cupidatat labore id cillum qui sunt ex esse fugiat. Consectetur reprehenderit non, dolore sit veniam voluptate officia ut sit mollit proident incididunt.", new Date(), admin);
         
         //Create comments
-        BlogComment comment1 = new BlogComment("Sì! Ho visto un video su yt", new Date(), pippo, post1);
-        BlogComment comment2 = new BlogComment("Grazie, ora provo", new Date(), admin, post1);
+        BlogComment comment1 = new BlogComment("Che è sta roba!?", new Date(), pippo, post1);
+        BlogComment comment2 = new BlogComment("Solo se sei un programmatore puoi capire :)", new Date(), admin, post1);
 
         // Save to db
         this.userRepository.saveAll(users);

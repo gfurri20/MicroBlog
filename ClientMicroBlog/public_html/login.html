@@ -6,37 +6,85 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="scripts/APP.js"></script>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm"></div>
-                
-                <div class="col-sm">
 
-                        <div class="form-group">
-                            <label for="login_username">Username</label>
-                            <input type="text" class="form-control" id="login_username">
-                        </div>
-                        <div class="form-group">
-                            <label for="login_password">Password</label>
-                            <input type="password" class="form-control" id="login_password">
-                        </div>
-
-                        <button id="btn_login">Submit</button>
-
+        <!-- navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand raleway" href="index.html">Microblog</a>
                 </div>
-                
-                <div class="col-sm"></div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <div class="navbar-form navbar-right" role="form">
+                        <button onclick="window.location.href = './registration.html'" class="btn btn-warning raleway">Sign in</button>
+                        <button style="margin-left: 10px" onclick="window.location.href = './index.html'" class="btn btn-warning raleway">Home</button>
+                    </div>
+                </div><!--/.navbar-collapse -->
+            </div>
+        </nav>
+
+        <!-- Main jumbotron -->
+        <div class="jumbotron shadow" style="background-color: #FFc675">
+            <div class="container">
+                <h1 style="color: #222" class="raleway">Login</h1>
             </div>
         </div>
-        
+
+        <div class="container">
+
+            <div class="jumbotron" style="background: none; border: 3px solid #eb9316">
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-md-3"></div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="login_username" style="font-size: 20px; font-weight: 1">Username</label>
+                                <input type="text" class="form-control" id="login_username" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="login_password" style="font-size: 20px; font-weight: 1">Password</label>
+                                <input type="password" class="form-control" id="login_password" placeholder="Password">
+                            </div>
+                            <br>
+                            <center><button id="btn_login" class="btn btn-warning">Submit</button></center>
+                        </div>
+
+                        <div class="col-md-3"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $("#btn_login").on("click", APP.doLogin);
             });
         </script>
