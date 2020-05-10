@@ -14,7 +14,9 @@ The database used is an in memory h2:
  - username: sa
  - password: <there isn't>
  
-During the startup some mockup data are uploaded.
+During the startup some mockup data are uploaded. In fact, there are already two users loaded:
+ - **Username**: "pippo", **Password**: "pippo", **Roles**: "USER"
+ - **Username**: "admin", **Password**: "admin", **Roles**: "ADMIN"
  
 As specified in the application properties the default port used is **8081**.
  
@@ -24,6 +26,13 @@ Now (2020/05/10) the `dev-jwt` branch contains complete management of registrati
  - h2 console: `/microblog/v2/h2`
  - swagger: `/microblog/v2/swagger-ui.html`
  - API: `/microblog/v2/api/**`
+ 
+## Users roles and permissions
+There are two type of users:
+ - `USER`: who can only comment posts.
+ - `ADMIN`: who can both comment on posts and create them.
+ 
+**When you register a new user it will be assigned the role of USER.**
  
 ## Branch name format
 ```master``` main branch, only merge is allowed.
