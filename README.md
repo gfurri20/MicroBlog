@@ -18,7 +18,7 @@ During the startup some mockup data are uploaded.
  
 As specified in the application properties the default port used is **8081**.
  
-Now (2019/05/10) the `dev-jwt` branch contains complete management of registration and login (server and client side) and logout (client side), also in this version the URIs have changed:
+Now (2020/05/10) the `dev-jwt` branch contains complete management of registration and login (server and client side) and logout (client side), also in this version the URIs have changed:
  - base path: `/microblog/v2`
  - login & registration: `/microblog/v2/login` & `/microblog/v2/registration`
  - h2 console: `/microblog/v2/h2`
