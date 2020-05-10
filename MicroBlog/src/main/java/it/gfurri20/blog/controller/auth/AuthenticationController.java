@@ -3,10 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.gfurri20.blog.controller;
+package it.gfurri20.blog.controller.auth;
 
-import it.gfurri20.blog.domain.LoginViewModel;
-import it.gfurri20.blog.service.IAuthenticationService;
+import io.swagger.annotations.Api;
+import it.gfurri20.blog.domain.auth.LoginViewModel;
+import it.gfurri20.blog.domain.auth.RegistrationModelView;
+import it.gfurri20.blog.service.auth.IAuthenticationService;
+import it.gfurri20.blog.service.IBlogUserService;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author gfurri20
  */
+@Api(tags = {"Authorization"}, consumes = "application/json")
 @RestController
 public class AuthenticationController
 {
@@ -33,8 +37,19 @@ public class AuthenticationController
     IAuthenticationService authenticationService;
     
     @Autowired
+    IBlogUserService userService;
+    
+    @Autowired
     private AuthenticationManager authenticationManager;
     
+    /**
+     * Take username and password and try to authenticate an user
+     * 
+     * @param request
+     * @param response
+     * @param credentials
+     * @return 
+     */
     @PostMapping("/login")
     public ResponseEntity login(HttpServletRequest request, HttpServletResponse response, @RequestBody LoginViewModel credentials)
     {
@@ -58,5 +73,11 @@ public class AuthenticationController
             //if pwd or username is wrong return an unauthorized http status
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+    
+    @PostMapping("/registration")
+    public ResponseEntity registration(HttpServletRequest request, HttpServletResponse response, @RequestBody RegistrationModelView credentials)
+    {
+        return null;
     }
 }

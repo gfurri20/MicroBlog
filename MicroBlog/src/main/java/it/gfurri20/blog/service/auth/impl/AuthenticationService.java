@@ -1,10 +1,11 @@
 
-package it.gfurri20.blog.service;
+package it.gfurri20.blog.service.auth.impl;
 
 import com.auth0.jwt.JWT;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import it.gfurri20.blog.security.UserPrincipal;
 import it.gfurri20.blog.security.jwt.JwtProperties;
+import it.gfurri20.blog.service.auth.IAuthenticationService;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,5 +1,5 @@
 
-package it.gfurri20.blog.service;
+package it.gfurri20.blog.service.impl;
 
 import it.gfurri20.blog.domain.BlogUser;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import it.gfurri20.blog.repository.IBlogUserRepository;
+import it.gfurri20.blog.service.IBlogUserService;
 
 
 /**

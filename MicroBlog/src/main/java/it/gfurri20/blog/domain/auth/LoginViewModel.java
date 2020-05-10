@@ -1,18 +1,16 @@
 
-package it.gfurri20.blog.domain;
+package it.gfurri20.blog.domain.auth;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 
 /**
  *
  * @author gfurri20
  */
+@Data
 public class LoginViewModel
 {
-    @Getter @Setter
     private String username;
-    @Getter @Setter
     private String password;
 }

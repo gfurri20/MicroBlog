@@ -1,5 +1,5 @@
 
-package it.gfurri20.blog.service;
+package it.gfurri20.blog.service.auth;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
