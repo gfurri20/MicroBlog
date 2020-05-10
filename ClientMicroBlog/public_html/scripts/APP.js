@@ -259,12 +259,27 @@ var APP =
     populate_post_template : function(post) {
         //clone template which will containes infos
         var post_template = $("#templates").find(".post_container_template").clone();
+        
+        //formatting date
+        var date = new Date(post["pubblicationDate"]);
+        year = date.getFullYear();
+        month = date.getMonth()+1;
+        dt = date.getDate();
+
+        if (dt < 10) {
+          dt = '0' + dt;
+        }
+        if (month < 10) {
+          month = '0' + month;
+        }
+        
+        var simple_date = year+'-' + month + '-'+dt;
 
         //populate the template
         post_template.find(".post_title").append(post["title"]);
         post_template.find(".post_content").append(post["content"]);
         post_template.find(".post_author").append(post["author"]["username"]);
-        post_template.find(".post_date").append(post["pubblicationDate"]);
+        post_template.find(".post_date").append(simple_date);
 
         //add to the template an id in order to identify each posts
         post_template.attr("id", "post" + post["id"]);
@@ -293,6 +308,21 @@ var APP =
         
         //clone template which will containes infos
         var comment_template = $("#templates").find(".comment_container_template").clone();
+        
+        //formatting date
+        var date = new Date(comment["pubblicationDate"]);
+        year = date.getFullYear();
+        month = date.getMonth()+1;
+        dt = date.getDate();
+
+        if (dt < 10) {
+          dt = '0' + dt;
+        }
+        if (month < 10) {
+          month = '0' + month;
+        }
+        
+        var simple_date = year+'-' + month + '-'+dt;
 
         //populate the template
         comment_template.find(".comment_content").append(comment["content"]);

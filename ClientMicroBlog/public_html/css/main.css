@@ -1,0 +1,38 @@
+
+/* 
+    Created on : 10 mag 2020, 17:41:30
+    Author     : gfurri20
+*/
+.raleway {
+    font-family: 'Raleway', sans-serif;
+}
+
+.post-container-jumbotron {
+    background: none;
+}
+
+.post_title {
+    color: #eb9316
+}
+
+.form-post-h2 {
+    text-align: center;
+    border-bottom-color: #FFc675;
+    border-bottom-style: solid;
+    border-bottom-width: 4px;
+    padding-bottom: 20px;
+    font-family: 'Raleway', sans-serif;
+}
+
+.form-login-jumbotron {
+    background: none;
+    margin-bottom: 20px
+}
+
+.text-white {
+    color: white;
+}
+
+.container {
+    font-family: 'Raleway', sans-serif;
+}
