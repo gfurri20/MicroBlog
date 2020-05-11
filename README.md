@@ -6,7 +6,35 @@
  ![](https://img.shields.io/badge/IDE-NetBeans-lightgray?style=for-the-badge&logo=apache%20netbeans%20ide&logoColor=white)
  ![](https://img.shields.io/badge/language-Java-lightblue?style=for-the-badge&logo=java&logoColor=red)
  
- ## Branch name format
+## Start the application
+Thanks to SpringBoot you will only have to download, build and run the project.
+ 
+The database used is an in memory h2:
+ - name: microblogdb
+ - username: sa
+ - password: <there isn't>
+ 
+During the startup some mockup data are uploaded. In fact, there are already two users loaded:
+ - **Username**: "pippo", **Password**: "pippo", **Roles**: "USER"
+ - **Username**: "admin", **Password**: "admin", **Roles**: "ADMIN"
+ 
+As specified in the application properties the default port used is **8081**.
+ 
+Now (2020/05/10) the `dev-jwt` branch contains complete management of registration and login (server and client side) and logout (client side), also in this version the URIs have changed:
+ - base path: `/microblog/v2`
+ - login & registration: `/microblog/v2/login` & `/microblog/v2/registration`
+ - h2 console: `/microblog/v2/h2`
+ - swagger: `/microblog/v2/swagger-ui.html`
+ - API: `/microblog/v2/api/**`
+ 
+## Users roles and permissions
+There are two type of users:
+ - `USER`: who can only comment posts.
+ - `ADMIN`: who can both comment on posts and create them.
+ 
+**When you register a new user it will be assigned the role of USER.**
+ 
+## Branch name format
 ```master``` main branch, only merge is allowed.
 
 ```dev``` main developing branch, only merge is allowed.
@@ -20,7 +48,7 @@
 ## Swagger
 To see information about API organized by Swagger:
 
-```http://localhost:8080/swagger-ui.html```
+```http://localhost:8081/microblog/v2/api/swagger-ui.html```
 
  ## Overview
 
@@ -31,3 +59,7 @@ To see information about API organized by Swagger:
 
  ## Crow diagram
  ![Diagram](docs/imgs/BlogSchema.svg)
+ 
+ ## Notes
+ 
+ Thanks to @JellyLama for being the tester :)
