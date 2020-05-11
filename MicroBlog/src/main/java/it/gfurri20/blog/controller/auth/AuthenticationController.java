@@ -111,7 +111,7 @@ public class AuthenticationController
     @ApiResponses({
         @ApiResponse(code = 200, message = "User successfully registered and authenticated", responseHeaders = {@ResponseHeader(name = "Authorization", response = String.class, description = "JWT Token")}),
         @ApiResponse(code = 401, message = "Authentication not allowed"),
-        @ApiResponse(code = 400, message = "Registration not allowed")
+        @ApiResponse(code = 422, message = "Registration not allowed")
     })
     @PostMapping("/registration")
     public ResponseEntity registration(HttpServletRequest request, HttpServletResponse response, @ApiParam(value = "User's new credentials", required = true) @RequestBody RegistrationModelView registrationCredentials) throws URISyntaxException
@@ -140,7 +140,7 @@ public class AuthenticationController
         else
         {
             //if the registraion fail
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //replace with 422
         }
     }
 }
