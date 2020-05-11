@@ -71,14 +71,19 @@ public class AuthenticationController
     @PostMapping("/login")
     public ResponseEntity login(HttpServletRequest request, HttpServletResponse response, @ApiParam(value = "User's credentials", required = true) @RequestBody LoginViewModel credentials)
     {
-        // Create login token
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                credentials.getUsername(),
-                credentials.getPassword(),
-                new ArrayList<>());
         
         try
         {
+            //check if the user exists
+            if(userService.getUserByUsername(credentials.getUsername()) == null)
+                throw new BadCredentialsException("User does not exist");
+            
+            // Create login token
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    credentials.getUsername(),
+                    credentials.getPassword(),
+                    new ArrayList<>());
+            
             // Authenticate user
             Authentication auth = authenticationManager.authenticate(authenticationToken);
             
@@ -140,7 +145,7 @@ public class AuthenticationController
         else
         {
             //if the registraion fail
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //replace with 422
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }

@@ -102,7 +102,7 @@ public class BlogCommentController
     {
         if( comment == null )
         {
-            return ResponseEntity.badRequest().build(); //replace with 422
+            return ResponseEntity.unprocessableEntity().build();
         }
         else
         {

@@ -75,6 +75,11 @@ var APP =
                 },
                 success: function(post, status) {
                     APP.populate_post_template(post);
+                },
+                statusCode: {
+                    404: function() {
+                        alert("Comment not found!");
+                    }
                 }
             }
         );
@@ -99,6 +104,11 @@ var APP =
                 },
                 success: function(comment, status) {
                     APP.populate_comment_template(comment);
+                },
+                statusCode: {
+                    404: function() {
+                        alert("Comment not found!");
+                    }
                 }
             }
         );
@@ -109,6 +119,13 @@ var APP =
         //gets variables from form
         var title = $("#input_post_title").val();
         var content = $("#input_post_content").val();
+        
+        //check if there is something
+        if(title.length === 0 || content.length === 0)
+        {
+            alert("Write something in the post!");
+            return null;
+        }
         
         $.ajax(
             {
@@ -130,7 +147,7 @@ var APP =
                         xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
                     }                    
                 },
-                success: function(data , status, request) {
+                success: function(data , status, request) {                   
                     var address = request.getResponseHeader("Location");
                     APP.showPost(address);
                 },
@@ -148,6 +165,13 @@ var APP =
         //gets variables from the form
         post_id = event.target.id;
         var comment_content = $("#content" + post_id).val();
+        
+        //check if there is something
+        if(comment_content.length === 0)
+        {
+            alert("Write something in the comment!");
+            return null;
+        }
         
         $.ajax(
             {
@@ -171,7 +195,7 @@ var APP =
                         xhr.setRequestHeader(APP.HEADER_STRING, APP.TOKEN_PREFIX + sessionStorage.getItem("JWT_TOKEN"));
                     }                    
                 },
-                success: function(data, status, request) {
+                success: function(data, status, request) {                    
                     var address = request.getResponseHeader("Location");
                     APP.showComment(address);
                 },
@@ -194,6 +218,25 @@ var APP =
         var input_username = $("#login_username").val();
         var input_pwd = $("#login_password").val();
         
+        //check the inpit values
+        let re = /[\s]/;
+        var resUsername = re.test(input_username);
+        var resPassword = re.test(input_pwd);
+        
+        //if there are empty values
+        if(input_username.length === 0 || input_pwd.length === 0)
+        {
+            alert("No empty value!");
+            return null;
+        }
+        //if there are spaces
+        if(resUsername || resPassword)
+        {
+            alert("No spaces!");
+            return null;
+        }
+        
+        
         $.ajax(
             {
                 url: "http://localhost:8081/microblog/v2/login",
@@ -208,6 +251,14 @@ var APP =
                    sessionStorage.setItem("JWT_TOKEN", request.getResponseHeader('Authorization').split(" ").pop());
                    sessionStorage.setItem("CURRENT_USERNAME", input_username);
                    window.location.assign("index.html");
+                },
+                statusCode: {
+                    401: function() {                       
+                        alert("Wrong username or password!");
+                    },
+                    422: function() {                       
+                        alert("Invalid request!");
+                    }
                 }
             } 
         );
@@ -224,6 +275,31 @@ var APP =
         var input_pwd = $("#registration_password").val();
         var input_repeat_pwd = $("#registration_repeat_password").val();
         
+        //check the inpit values
+        let re = /[\s]/;
+        var resUsername = re.test(input_username);
+        var resPassword = re.test(input_pwd);
+        var resRepeatPassword = re.test(input_repeat_pwd);
+        
+        //if there are empty values
+        if(input_username.length === 0 || input_pwd.length === 0 || input_repeat_pwd.length === 0)
+        {
+            alert("No empty value!");
+            return null;
+        }
+        //if there are spaces
+        if(resUsername || resPassword || resRepeatPassword)
+        {
+            alert("No spaces!");
+            return null;
+        }
+        //if the two pwds are equal
+        if(input_pwd !== input_repeat_pwd)
+        {
+            alert("Repeated password does not correspond!");
+            return null;
+        }
+        
         $.ajax(
             {
                 url: "http://localhost:8081/microblog/v2/registration",
@@ -239,6 +315,14 @@ var APP =
                    sessionStorage.setItem("JWT_TOKEN", request.getResponseHeader('Authorization').split(" ").pop());
                    sessionStorage.setItem("CURRENT_USERNAME", input_username);
                    window.location.assign("index.html");
+                },
+                statusCode: {
+                    401: function() {                        
+                        alert("Authentication failed!");
+                    },
+                    422: function() {                       
+                        alert("Username already used!");
+                    }
                 }
             } 
         );
@@ -246,14 +330,17 @@ var APP =
     
     doLogout : function()
     {
-        //deletes the variables correlated to an user
-        sessionStorage.removeItem("JWT_TOKEN");
-        sessionStorage.removeItem("CURRENT_USERNAME");
-        //updates the status banner
-        $("#log_status_banner").html("Not Logged");
-        $("#log_status_banner").css("color", "red");
-        //alert the browser
-        alert("Logout successfully!");
+        if( sessionStorage.getItem("JWT_TOKEN") !== null )
+        {
+            //deletes the variables correlated to an user
+            sessionStorage.removeItem("JWT_TOKEN");
+            sessionStorage.removeItem("CURRENT_USERNAME");
+            //updates the status banner
+            $("#log_status_banner").html("Not Logged");
+            $("#log_status_banner").css("color", "red");
+            //alert the browser
+            alert("Logout successfully!");
+        }
     },
     
     populate_post_template : function(post) {

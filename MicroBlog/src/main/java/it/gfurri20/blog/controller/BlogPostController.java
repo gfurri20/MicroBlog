@@ -106,7 +106,7 @@ public class BlogPostController
     {
         if( post == null )
         {
-            return ResponseEntity.badRequest().build(); //replace with 422
+            return ResponseEntity.unprocessableEntity().build();
         } else
         {
             blogPostService.createPost(post);
