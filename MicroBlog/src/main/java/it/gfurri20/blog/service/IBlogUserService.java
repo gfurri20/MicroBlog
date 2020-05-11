@@ -1,6 +1,7 @@
 package it.gfurri20.blog.service;
 
 import it.gfurri20.blog.domain.BlogUser;
+import it.gfurri20.blog.domain.auth.RegistrationModelView;
 import java.util.List;
 
 
@@ -11,11 +12,13 @@ import java.util.List;
 public interface IBlogUserService
 {
     /**
-     * Create a new <code>BlogUser</code>
+     * Register a new <code>BlogUser</code> with USER role 
+     * if his credentials are correct
      * 
-     * @param user new istance
+     * @param credentials used by the user to register himself
+     * @return the saved <code>BlogUser</code>, if not <code>null</code>
      */
-    public void createUser(BlogUser user);
+    public BlogUser registerBasicUser(RegistrationModelView credentials);
     /**
      * Update a specific <code>BlogUser</code>
      * 

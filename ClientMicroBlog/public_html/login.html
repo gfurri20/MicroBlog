@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/main.css">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="scripts/APP.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </head>
+    <body>
+
+        <!-- navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #222">
+            <div class="container">
+                <a class="navbar-brand" href="./index.html">Microblog</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_navbar" aria-controls="main_navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="main_navbar">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./registration.html">Sign in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main jumbotron -->
+        <div class="jumbotron shadow" style="background-color: #FFc675">
+            <div class="container">
+                <h1 style="color: #222" class="raleway">Login</h1>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="jumbotron" style="background: none; border: 3px solid #eb9316">
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-md-3"></div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="login_username" style="font-size: 20px; font-weight: 1">Username</label>
+                                <input type="text" class="form-control" id="login_username" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="login_password" style="font-size: 20px; font-weight: 1">Password</label>
+                                <input type="password" class="form-control" id="login_password" placeholder="Password">
+                            </div>
+                            <br>
+                            <center><button id="btn_login" class="btn btn-warning">Submit</button></center>
+                        </div>
+
+                        <div class="col-md-3"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $("#btn_login").on("click", APP.doLogin);
+            });
+        </script>
+    </body>
+</html>

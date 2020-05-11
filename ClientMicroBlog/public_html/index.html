@@ -5,69 +5,127 @@
         <title>Home</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/main.css">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+
         
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
         <script src="scripts/APP.js"></script>
     </head>
     <body>
-        <div id="main_posts_container">
-            
-            <h1>Micro blog</h1>
-            
-            <div id="posts_container" style="border: 4px black solid">
-                
-                <div id="submit_post_form" style="border: 3px orange solid; margin: 5px">
-                    <p><input id="input_post_title" type="text" placeholder="An awesome title..."></p>
-                    <p><textarea id="input_post_content" cols="40" rows="4" placeholder="Some awesome content..."></textarea></p>
-                    <p><button id="btn_input_post_submit">Create Post!</button>
+
+        <!-- navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #222">
+            <div class="container">
+                <a class="navbar-brand" href="./index.html">Microblog</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_navbar" aria-controls="main_navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="main_navbar">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./registration.html">Sign in</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./login.html">Log in</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-md-0">
+                        <span id="log_status_banner" style="color: red" class="raleway">Not Logged</span>
+                        <input type="button" style="margin-left: 20px" id="btn_logout" class="btn btn-outline-warning raleway" value="Log out">
+                    </form>
                 </div>
-                
+            </div>
+        </nav>
+
+        <!-- Main jumbotron -->
+        <div class="jumbotron shadow" style="background-color: #FFc675">
+            <div class="container">
+                <h1 style="color: #222" class="raleway">MicroBlog</h1>
+                <p style="color: #444" class="raleway">A simple blog where you can post and comment whatever you want! (if you're logged ;D)</p>
             </div>
         </div>
-        
-        <!--Templates----------------------------------------->
-        
-        <div id="templates" style="display: none">
-            
-            <!--Contains ALL posts-->
-            <div class="post_container_template" style="border: 3px solid blue; margin: 5px">
-                
-                <p class="post_title"></p>
-                <p class="post_content"></p>
-                <p class="post_author"></p>
-                <p class="post_date"></p>
-                
-            </div>
-            
-            <!--Contains ALL comments for each post-->
-            <div class="comments_container_template" style="border: 2px solid green; margin: 5px">
+
+        <div id="main_posts_container" class="container">
+
+            <div id="posts_container" class="col-md">
+
+                <h2 class="form-post-h2">Create a Post!</h2>
+                <div id="submit_post_form" class="jumbotron form-login-jumbotron">
+                    <div class="form-group">
+                        <label for="input_post_title" style="font-size: 20px; font-weight: 1">Title</label>
+                        <input id="input_post_title" type="text" placeholder="An awesome title..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="input_post_content" style="font-size: 20px; font-weight: 1">Content</label>
+                        <textarea id="input_post_content" cols="40" rows="4" placeholder="Some awesome content..." class="form-control"></textarea>
+                    </div>
+                    <button id="btn_input_post_submit" class="btn btn-warning">Create Post!</button>
+                </div>
 
             </div>
-            
-            <!--Contains a single comment-->
-            <div class="comment_container_template" style="border: 1px solid red; margin: 5px">
-                
-                <p class="comment_content"></p>
-                <p class="comment_author"></p>
-                
-            </div>
-            
-            <!--Contains the comment form-->
-            <div class="submit_comment_form_template" style="border: 2px fuchsia solid; margin: 5px">
-                
-                <p><textarea class="input_comment_content" cols="40" rows="2" placeholder="Some awesome content..."></textarea></p>
-                <p><button class="btn_input_comment_submit">Post Comment!</button>
-                    
-            </div>
-            
         </div>
-        
+
+        <!--Templates----------------------------------------->
+
+        <div id="templates" style="display: none">
+
+            <!--Contains ALL posts-->
+            <div class="post_container_template jumbotron post-container-jumbotron" style="border: 3px solid #eb9316; padding: 35px">
+
+                <h3 class="post_title"></h3>
+                <p style="font-size: 18px; margin: 5px" class="post_content"></p>
+                <small>by</small> <p class="post_author"></p>
+                <small>on</small> <p style="font-size: 16px" class="post_date"></p>
+
+            </div>
+
+            <!--Contains ALL comments for each post-->
+            <div class="comments_container_template">
+                
+            </div>
+
+            <!--Contains a single comment-->
+            <div class="comment_container_template" style="border-bottom: 1px solid #FFc675; padding: 10px; margin: 5px">
+
+                <p style="font-size: 17px" class="comment_content"></p>
+                <small>by</small> <p style="font-size: 18px" class="comment_author"></p>
+
+            </div>
+
+            <!--Contains the comment form-->
+            <div class="submit_comment_form_template" style="border-top: 2px #FFc675 solid; margin: 5px; margin-bottom: 20px; padding-top: 20px">
+                <div class="form-group">
+                    <label for="input_comment_content" style="font-size: 15px; font-weight: 1">Comment</label>
+                    <textarea class="input_comment_content form-control" cols="40" rows="2" placeholder="Some awesome content..."></textarea>
+                </div>
+                <button class="btn_input_comment_submit btn btn-warning">Post Comment!</button>
+            </div>
+
+        </div>
+
         <script>
             //init APP
-            $(document).ready(function() {
+            $(document).ready(function () {
                 APP.showPosts();
                 $("#btn_input_post_submit").on("click", APP.submitpost);
+                $("#btn_logout").on("click", APP.doLogout);
+
+                //check if someone is logged in
+                if (sessionStorage.getItem("JWT_TOKEN") !== null)
+                {
+                    $("#log_status_banner").html("Logged In as: " + sessionStorage.getItem("CURRENT_USERNAME"));
+                    $("#log_status_banner").css("color", "green");
+                }
             });
         </script>
-            
+    </body>        
 </html>

@@ -7,18 +7,19 @@ package it.gfurri20.blog.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import it.gfurri20.blog.domain.BlogUser;
 import it.gfurri20.blog.service.IBlogUserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -26,31 +27,46 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author gfurri20
  */
 @Api(tags = {"User"})
-@Controller
-@RequestMapping("users")
+@RestController
+@RequestMapping("api/users")
 public class BlogUserController
 {
     @Autowired
     IBlogUserService blogUserService;
     
+    /**
+     * Returns all saved users
+     * 
+     * @return http 200 with the list of users, if there are any users return an empty list
+     */
     @RequestMapping(method = RequestMethod.GET)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @ApiOperation(value = "Returns all saved users")
+    @ApiOperation(
+        value = "Returns all saved users",
+        httpMethod = "GET"
+    )
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "Users founded"),
+    })
     public ResponseEntity<List<BlogUser>> getUsers()
     {
-        if( !(blogUserService.getUsers().isEmpty()) )
-        {
-            return new ResponseEntity<>(blogUserService.getUsers(), HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(blogUserService.getUsers(), HttpStatus.OK);
     }
     
+    /**
+     * Returns a user by its id
+     * 
+     * @param id of the user
+     * @return http 200 with the searched user, 404 if the user does not exist
+     */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @ApiOperation(value = "Returns a user by its id")
+    @ApiOperation(
+        value = "Returns a user by its id",
+        httpMethod = "GET"
+    )
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "User founded"),
+        @ApiResponse(code = 404, message = "User not found")
+    })
     public ResponseEntity<BlogUser> getUserById(@PathVariable Long id)
     {
         if( blogUserService.getUserById(id) != null )
@@ -63,29 +79,23 @@ public class BlogUserController
         }
     }
     
-    @RequestMapping(method = RequestMethod.POST)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @ApiOperation(value = "Creates a new user")
-    public ResponseEntity createUser(@RequestBody BlogUser user)
-    {
-        if( user == null )
-        {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        else if( blogUserService.getUserByUsername(user.getUsername()) == null )
-        {
-            blogUserService.createUser(user);
-            return new ResponseEntity(HttpStatus.CREATED);
-        }
-        else
-        {
-            return new ResponseEntity(HttpStatus.CONFLICT);
-        }
-    }
-    
+    /**
+     * Updates a user
+     * 
+     * @param id of the user to update
+     * @param user updated istance
+     * @return http status 204 if it is successful, 404 if the user to update does not exist, 409 if there are erros
+     */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @ApiOperation(value = "Updates an user")
+    @ApiOperation(
+        value = "Updates a user",
+        httpMethod = "PUT"
+    )
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "User updated"),
+        @ApiResponse(code = 404, message = "User not found"),
+        @ApiResponse(code = 409, message = "Conflict")
+    })
     public ResponseEntity updateUser(@PathVariable Long id, @RequestBody BlogUser user)
     {
         if( blogUserService.getUserById(id) == null )
@@ -103,9 +113,22 @@ public class BlogUserController
         }
     }
     
+    /**
+     * Deletes a user
+     * 
+     * @param id of the user to delete
+     * @return http status 204 if it is successful, 404 if the user to update does not exist, 409 if there are erros
+     */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @ApiOperation(value = "Deletes an user")
+    @ApiOperation(
+        value = "Deletes a user",
+        httpMethod = "DELETE"
+    )
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "User deleted"),
+        @ApiResponse(code = 404, message = "User not found"),
+        @ApiResponse(code = 409, message = "Conflict")
+    })
     public ResponseEntity deleteUser(@PathVariable Long id)
     {
         if( blogUserService.getUserById(id) == null )

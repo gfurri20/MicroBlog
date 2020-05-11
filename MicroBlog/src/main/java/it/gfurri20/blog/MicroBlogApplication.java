@@ -14,5 +14,4 @@ public class MicroBlogApplication
     {
         SpringApplication.run(MicroBlogApplication.class, args);
     }
-
 }
