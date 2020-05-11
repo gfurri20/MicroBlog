@@ -59,3 +59,7 @@ To see information about API organized by Swagger:
 
  ## Crow diagram
  ![Diagram](docs/imgs/BlogSchema.svg)
+ 
+ ## Notes
+ 
+ Thanks to @JellyLama for being the tester :)
