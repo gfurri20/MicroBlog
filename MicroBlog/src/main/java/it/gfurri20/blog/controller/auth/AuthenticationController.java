@@ -6,6 +6,11 @@
 package it.gfurri20.blog.controller.auth;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 import it.gfurri20.blog.domain.BlogUser;
 import it.gfurri20.blog.domain.auth.LoginViewModel;
 import it.gfurri20.blog.domain.auth.RegistrationModelView;
@@ -32,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author gfurri20
  */
-@Api(tags = {"Authorization"}, consumes = "application/json")
+@Api(tags = {"Authentication"})
 @RestController
 public class AuthenticationController
 {
@@ -46,15 +51,25 @@ public class AuthenticationController
     private AuthenticationManager authenticationManager;
     
     /**
-     * Take username and password and try to authenticate an user
+     * Allows a user to authenticate to the server through his credentials,
+     * if this is successful a JWT token is created and returned in the response header
      * 
-     * @param request
-     * @param response
-     * @param credentials
-     * @return 
+     * @param request http
+     * @param response http
+     * @param credentials username and password to login
+     * @return http 200 and the JWT token in the header if the user is successfully authenticated, http 401 if the credentials are wrong
      */
+    @ApiOperation(
+        value = "Allows a user to authenticate to the server through his credentials",
+        httpMethod = "POST",
+        consumes = "application/json"
+    )
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "User successfully authenticated", responseHeaders = {@ResponseHeader(name = "Authorization", response = String.class, description = "JWT Token")}),
+        @ApiResponse(code = 401, message = "Wrong credentials, authentication not allowed")
+    })
     @PostMapping("/login")
-    public ResponseEntity login(HttpServletRequest request, HttpServletResponse response, @RequestBody LoginViewModel credentials)
+    public ResponseEntity login(HttpServletRequest request, HttpServletResponse response, @ApiParam(value = "User's credentials", required = true) @RequestBody LoginViewModel credentials)
     {
         // Create login token
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -78,8 +93,28 @@ public class AuthenticationController
         }
     }
     
+    /**
+     * Allows a user to register and then authenticate,
+     * if this is successful a JWT token is created and returned in the response header
+     * 
+     * @param request http
+     * @param response http
+     * @param registrationCredentials username, password and repeated password
+     * @return http 200 and the JWT token in the header if the user is successfully registered and authenticated, http 401 if the credentials are wrong
+     * @throws URISyntaxException 
+     */
+    @ApiOperation(
+        value = "Allows a user to register and then authenticate",
+        httpMethod = "POST",
+        consumes = "application/json"
+    )
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "User successfully registered and authenticated", responseHeaders = {@ResponseHeader(name = "Authorization", response = String.class, description = "JWT Token")}),
+        @ApiResponse(code = 401, message = "Authentication not allowed"),
+        @ApiResponse(code = 422, message = "Registration not allowed")
+    })
     @PostMapping("/registration")
-    public ResponseEntity registration(HttpServletRequest request, HttpServletResponse response, @RequestBody RegistrationModelView registrationCredentials) throws URISyntaxException
+    public ResponseEntity registration(HttpServletRequest request, HttpServletResponse response, @ApiParam(value = "User's new credentials", required = true) @RequestBody RegistrationModelView registrationCredentials) throws URISyntaxException
     {
         //try creating the user
         BlogUser user = userService.registerBasicUser(registrationCredentials);
@@ -105,7 +140,7 @@ public class AuthenticationController
         else
         {
             //if the registraion fail
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //replace with 422
         }
     }
 }
